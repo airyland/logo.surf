@@ -797,7 +797,7 @@ const examples = [
       size: 512,
       bgColor: '#2E8B57',
       textColor: '#FFFFFF',
-      fontFamily: 'Impact, sans-serif',
+      fontFamily: 'Impact, ImpactFallback, sans-serif',
       fontWeight: 'normal',
       radius: 16
     },
@@ -1005,7 +1005,7 @@ const examples = [
       size: 512,
       bgColor: '#FC3C7D',
       textColor: '#FFFFFF',
-      fontFamily: 'Impact, sans-serif',
+      fontFamily: 'Impact, ImpactFallback, sans-serif',
       fontWeight: 'normal',
       radius: 0
     },
@@ -1065,7 +1065,7 @@ const examples = [
       size: 512,
       bgColor: '#FF4500',
       textColor: '#FFFFFF',
-      fontFamily: 'Impact, sans-serif',
+      fontFamily: 'Impact, ImpactFallback, sans-serif',
       fontWeight: 'bold',
       radius: 0
     },
@@ -1089,7 +1089,7 @@ const examples = [
       size: 512,
       bgColor: '#E74C3C',
       textColor: '#FFFFFF',
-      fontFamily: 'Impact, sans-serif',
+      fontFamily: 'Impact, ImpactFallback, sans-serif',
       fontWeight: 'bold',
       radius: 0
     },
@@ -1546,7 +1546,7 @@ const examples = [
       size: 512,
       bgColor: '#FFD700',
       textColor: '#000000',
-      fontFamily: 'Impact, sans-serif',
+      fontFamily: 'Impact, ImpactFallback, sans-serif',
       fontWeight: 'normal',
       radius: 16
     },
