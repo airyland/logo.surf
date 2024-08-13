@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Text-to-Logo and Text-to-Favicon Generator</title>
+    <meta name="description" content="Create stunning logos and favicons for free with Logo.surf. Our easy-to-use text-to-logo generator offers customizable designs in multiple formats. No signup required!">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="1280x1280" href="https://i.v2ex.co/jG086QPhl.png">
+    <script defer data-domain="gen.favicon.im" src="https://click.pageview.click/js/script.js"></script>
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      'theme': '#111827',
+                      'theme-dark': '#020617',
+                  }
+              }
+          }
+      }
+    </script>
+    <style>
+      body {
+          font-family: 'Poppins', sans-serif;
+      }
+      .color-picker-wrapper {
+          display: flex;
+          align-items: center;
+      }
+      .color-preview {
+          width: 30px;
+          height: 30px;
+          border: 1px solid #ccc;
+          margin-right: 10px;
+          cursor: pointer;
+      }
+      .color-input {
+          flex-grow: 1;
+      }
+      @media (max-width: 640px) {
+          .preview-small-screen {
+              max-width: 80vw;
+              margin: 0 auto;
+          }
+      }
+      .grid-background {
+          background-color: #f0f4f8;
+          background-image: linear-gradient(45deg, #e2e8f0 25%, transparent 25%), linear-gradient(-45deg, #e2e8f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e2e8f0 75%), linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+          background-size: 20px 20px;
+          background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      }
+      .example-clicked {
+          animation: pulse 0.3s;
+      }
+      .base-button {
+          background: #111827;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 4px;
+          transition: all .3s ease;
+      }
+      .base-button:hover {
+          background: #374151;
+      }
+      @keyframes pulse {
+          0% {
+              transform: scale(1);
+          }
+          50% {
+              transform: scale(1.05);
+          }
+          100% {
+              transform: scale(1);
+          }
+      }
+      #preview svg {
+          width: 100%;
+          height: 100%;
+      }
+      #logo-gallery {
+          pointer-events: none;
+      }
+      #logo-gallery-inner {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+          gap: 1rem;
+          padding: 1rem;
+      }
+      #logo-gallery-inner svg {
+          width: 100%;
+          height: auto;
+      }
+      @media (max-width: 640px) {
+          #logo-gallery-inner {
+              grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+              gap: 0.5rem;
+          }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <section class="py-24 bg-gray-50 overflow-hidden">
+      <div class="container mx-auto px-4 z-10 mt-2 text-center">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-4xl sm:text-6xl font-bold mb-4 text-gray-900 leading-[1.2]">Text to Logo & Favicon</h2>
+          <p class="text-base sm:text-xl text-gray-500 mb-8">Create a professional logo & favicon in seconds, not days.</p>
+          <div class="grid grid-cols-3 gap-6 mb-12 max-w-[360px] mx-auto items-start">
+            <div class="flex flex-col items-center justify-center">
+              <svg class="size-16 sm:size-20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <rect width="512" height="512" fill="#2E8B57" rx="16" ry="16"></rect>
+                <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Impact, sans-serif" font-weight="normal" fill="#FFFFFF" font-size="256.36146115395627">SHIP</text>
+              </svg>
+              <p class="text-sm sm:text-base font-medium text-gray-700 mt-3">Ship Fast</p>
+            </div>
+            <div class="flex flex-col items-center justify-center">
+              <svg class="size-16 sm:size-20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <rect width="512" height="512" fill="#FF4500" rx="16" ry="16"></rect>
+                <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Impact, sans-serif" font-weight="normal" fill="#FFFFFF" font-size="256.36146115395627">PRO</text>
+              </svg>
+              <p class="text-sm sm:text-base  font-medium text-gray-700 mt-3">Professional</p>
+            </div>
+            <div class="flex flex-col items-center justify-center">
+              <svg class="size-16 sm:size-20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <rect width="512" height="512" fill="#000000" rx="16" ry="16"></rect>
+                <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Impact, sans-serif" font-weight="normal" fill="#FFFFFF" font-size="256.36146115395627">FREE</text>
+              </svg>
+              <p class="text-sm sm:text-base font-medium text-gray-700 mt-3">Totally Free</p>
+            </div>
+          </div>
+        </div>
+        <div id="logo-gallery-inner" class="opacity-40 hover:opacity-100 transition grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4 max-w-[1440px] mx-auto">
+          <!-- Logo items will be dynamically inserted here -->
+        </div>
+        <a href="#generate-favicon" class="mt-12 inline-flex items-center justify-center bg-gray-900 hover:bg-gray-700 text-white font-medium py-4 px-7 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+        Generate Your Logo & Favicon Now
+        </a>
+      </div>
+    </section>
+    <div class="container mx-auto px-4 py-8">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">Try it now</h2>
+        <div class="flex flex-col lg:flex-row gap-6 mb-12" id="generate-favicon">
+          <div class="w-full lg:w-1/2">
+            <div class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">Settings</h2>
+              <div class="mb-4">
+                <label for="text" class="block mb-2 text-gray-600">Text</label>
+                <input type="text" id="text" class="w-full border rounded px-3 py-2" value="AI">
+              </div>
+              <div class="flex flex-wrap -mx-2 mb-4">
+                <div class="w-1/2 px-2">
+                  <label for="size" class="block mb-2 text-gray-600">Size</label>
+                  <input type="number" id="size" class="w-full border rounded px-3 py-2" value="512" disabled>
+                </div>
+                <div class="w-1/2 px-2">
+                  <label for="radius" class="block mb-2 text-gray-600">Radius</label>
+                  <input type="number" id="radius" class="w-full border rounded px-3 py-2" value="80">
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="bgColor" class="block mb-2 text-gray-600">Background Color</label>
+                <div class="color-picker-wrapper">
+                  <input type="color" id="bgColorPicker" class="hidden">
+                  <div id="bgColorPreview" class="color-preview"></div>
+                  <input type="text" id="bgColor" class="color-input w-full border rounded px-3 py-2" value="#131516">
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="fontFamily" class="block mb-2 text-gray-600">Font Family</label>
+                <div class="flex">
+                  <input type="text" id="fontFamily" class="w-2/3 border rounded-l px-3 py-2" placeholder="Enter font name or select">
+                  <select id="fontFamilySelect" class="w-1/3 border border-l-0 rounded-r px-3 py-2">
+                    <option value="">Select font</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier">Courier</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Palatino">Palatino</option>
+                    <option value="Garamond">Garamond</option>
+                    <option value="Bookman">Bookman</option>
+                    <option value="Comic Sans MS">Comic Sans MS</option>
+                    <option value="Trebuchet MS">Trebuchet MS</option>
+                    <option value="Arial Black">Arial Black</option>
+                    <option value="Impact">Impact</option>
+                  </select>
+                </div>
+              </div>
+              <div class="gap-4 mb-4">
+                <div>
+                  <label for="fontWeight" class="block mb-2 text-gray-600">Font Weight</label>
+                  <select id="fontWeight" class="w-full border rounded px-3 py-2">
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-6">
+                <label for="textColor" class="block mb-2 text-gray-600">Text Color</label>
+                <div class="color-picker-wrapper">
+                  <input type="color" id="textColorPicker" class="hidden">
+                  <div id="textColorPreview" class="color-preview"></div>
+                  <input type="text" id="textColor" class="color-input w-full border rounded px-3 py-2" value="#70e000">
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="verticalOffset" class="block mb-2 text-gray-600">Fine-tune Vertical Position</label>
+                <input type="range" id="verticalOffset" min="-30" max="30" value="0" step="1" class="w-full">
+                <span id="verticalOffsetValue" class="text-sm text-gray-500">0%</span>
+              </div>
+              <div class="flex flex-col sm:flex-row justify-between">
+                <button id="resetBtn" class="base-button mb-2 sm:mb-0">Reset to Default</button>
+                <button id="generateBtn" class="hidden bg-theme text-white px-4 py-2 rounded hover:bg-theme-dark">Generate Favicons</button>
+              </div>
+              <div class="mt-6">
+                <h3 class="text-lg font-semibold mb-2 text-gray-700">Recommended Color Schemes</h3>
+                <div id="colorSchemes" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                  <!-- Color schemes will be dynamically added here -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full lg:w-1/2">
+            <div class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">Preview</h2>
+              <div class="w-full max-w-lg mx-auto preview-small-screen">
+                <div id="preview" class="grid-background w-full aspect-square bg-gray-100 flex items-center justify-center border border-gray-300 p-4"></div>
+              </div>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <button id="downloadPng" class="base-button">Download PNG</button>
+                <button id="downloadSvg" class="base-button">Download SVG</button>
+                <button id="downloadZip" class="base-button">Download All (ZIP)</button>
+              </div>
+              <p class="mt-4 text-sm text-gray-600">
+                Download All (ZIP) includes: favicon.ico, favicon.svg, favicon-16x16.png, favicon-32x32.png, favicon-180x180.png, favicon-512x512.png, favicon-2048x2048.png
+              </p>
+              <p class="text-sm text-gray-700 mt-2 font-medium bg-yellow-100 p-2 rounded">
+                <span class="font-semibold">Tip:</span> For emojis or special symbols, we recommend using PNG to ensure consistent display across all systems.
+              </p>
+              <p class="mt-2 text-sm text-gray-600 bg-gray-100 p-2 rounded">
+                For additional PNG optimization, check out <a href="https://small.im" target="_blank" class="text-theme hover:underline">https://small.im</a>
+              </p>
+            </div>
+            <div class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mt-6">
+              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">HTML Code</h2>
+              <pre id="htmlCode" class="bg-gray-100 p-4 rounded overflow-x-auto text-sm"><code>&lt;link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;</code></pre>
+              <p class="mt-2 text-sm text-gray-600 bg-gray-100 p-2 rounded">
+                Place the following code in the <code class="bg-gray-200 px-1 rounded">&lt;head&gt;</code> section of your HTML document:
+              </p>
+              <button id="copyHtmlCode" class="mt-4 base-button">Copy HTML Code</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-16" id="gallery">
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-center text-gray-900">Text-Logo Gallery</h2>
+        <p class="text-base text-center text-gray-500">
+          Note: Emoji rendering may vary across systems. The icons below look best on Mac.
+        </p>
+        <p class="text-base text-center text-gray-500">
+          Brand logos shown are copyrighted by their owners. For learning only.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 gallery-box mt-12">
+          <!-- Favicon examples will be dynamically added here -->
+        </div>
+      </div>
+      <div class="mt-16">
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">Features</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">Multiple Formats</h3>
+            <p class="text-gray-600">Generate favicons in ICO, SVG, and PNG formats to ensure compatibility across different platforms and browsers.</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">Customization</h3>
+            <p class="text-gray-600">Easily customize text, colors, font, and size to create a unique favicon that matches your brand identity.</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">Instant Preview</h3>
+            <p class="text-gray-600">See your favicon changes in real-time with our instant preview feature, making it easy to perfect your design.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-16">
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">What is a favicon?</h3>
+            <p class="text-gray-600">A favicon is a small icon associated with a website, typically displayed in the browser's address bar, tabs, and bookmarks.</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">What about font copyrights?</h3>
+            <div class="text-gray-600">
+              <p class="mb-2">
+                It's important to check the license information for each font to determine its usage rights. Different fonts have different licensing terms:
+              </p>
+              <ul class="list-disc list-inside mb-2">
+                <li>Some fonts are free for both personal and commercial use.</li>
+                <li>Others may be free for personal use but require a license for commercial applications.</li>
+                <li>Some fonts may have restrictions on modification or embedding.</li>
+              </ul>
+              <p class="mb-2">
+                <strong>Example:</strong> The Impact font, which is popular for memes and bold designs, is free for personal use. However, commercial use typically requires purchasing a license.
+              </p>
+              <p>
+                Always verify the licensing terms of the fonts you use, especially for commercial projects. When in doubt, consider using open-source alternatives or purchasing appropriate licenses to ensure legal compliance.
+              </p>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">What types of characters are supported in the favicon text?</h3>
+            <p class="text-gray-600">Our favicon generator supports a wide range of characters, including:</p>
+            <ul class="list-disc list-inside text-gray-600 mt-2">
+              <li>Standard alphanumeric characters (A-Z, a-z, 0-9)</li>
+              <li>Special symbols and punctuation marks (!@#$%^&*, etc.)</li>
+              <li>Unicode characters from various scripts (e.g., Chinese, Japanese, Arabic, Cyrillic)</li>
+              <li>Emoji (😊, 🚀, 🌈, etc.)</li>
+            </ul>
+            <p class="text-gray-600 mt-2">You can use single characters, multiple characters, or even combine different types of characters. However, please note that complex or lengthy text may be scaled down to fit within the favicon, which could affect readability on smaller displays.</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">Why do I need different favicon sizes?</h3>
+            <p class="text-gray-600">Different devices and platforms use different favicon sizes. Providing multiple sizes ensures your favicon looks crisp across all devices.</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">How do I add the favicon to my website?</h3>
+            <p class="text-gray-600">Copy the HTML code provided by our generator and paste it into the &lt;head&gt; section of your HTML document. Make sure to upload the favicon files to your web server.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="py-16 w-full mt-auto border-t border-theme bg-theme text-white z-20">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-center mb-6">
+          <a href="https://twitter.com/we_webmaster" target="_blank" rel="noreferrer" class="inline-flex items-center px-6 py-3 bg-white text-theme rounded-full hover:bg-gray-100 transition-colors duration-200 text-lg font-semibold shadow-md hover:shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+            </svg>
+            Follow us on X
+          </a>
+        </div>
+        <div class="flex flex-wrap justify-center mb-4">
+          <a href="https://dns.fish" aria-label="dns.fish Link" target="_blank" class="text-white mx-2 my-1 hover:underline">DNS.fish</a>
+          <a href="https://www.ip.network" aria-label="www.ip.network Link" target="_blank" class="text-white mx-2 my-1 hover:underline">IP.network</a>
+          <a href="https://Favicon.im" aria-label="Favicon.im Link" target="_blank" class="text-white mx-2 my-1 hover:underline">Favicon.im</a>
+          <a href="https://Small.im" aria-label="Small.im Link" target="_blank" class="text-white mx-2 my-1 hover:underline">Small.im</a>
+          <a href="https://Query.domains" aria-label="Query.domains Link" target="_blank" class="text-white mx-2 my-1 hover:underline">Query.domains</a>
+          <a href="https://buy.me.a.coffee" aria-label="buy.me.a.coffee Link" target="_blank" class="text-white mx-2 my-1 hover:underline">Buy.me.a.coffee</a>
+        </div>
+        <p class="text-center text-xs text-white opacity-75">
+          Users are responsible for ensuring they have the appropriate rights and licenses for any fonts used in their projects. We does not provide any font licenses and is not liable for any copyright infringement resulting from improper font usage. Users are encouraged to review and comply with the licensing terms of each font they use, especially for commercial applications.
+        </p>
+        <p class="text-center text-xs text-white opacity-75 mt-2">
+          We do not collect any personal information.
+        </p>
+        <div class="flex flex-col justify-center items-center mt-4">
+          <a href="https://github.com/airyland/logo.surf" target="_blank" class="text-white hover:text-gray-300 transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" class="transition-all duration-200 hover:scale-110">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+          <p class="text-center text-xs text-white opacity-40 mt-2">
+            Licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script src="./app.js"></script>
+  </body>
+</html>
