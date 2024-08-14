@@ -34,6 +34,7 @@ Check out our other tools and services:
 - [Favicon.im](https://Favicon.im) - Favicon generator and management
 - [Small.im](https://Small.im) - URL shortener service
 - [Query.domains](https://Query.domains) - Domain name search and information
+- [RedirectCheck](https://www.redirectcheck.org) - URL redirect checker
 
 ## Contributing
 

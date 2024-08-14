@@ -1626,3 +1626,34 @@ function applyConfig(config) {
     behavior: 'smooth'
   });
 }
+
+// FAQ
+document.addEventListener('DOMContentLoaded', (event) => {
+  const accordion = document.getElementById('faq-accordion');
+  
+  accordion.addEventListener('click', (e) => {
+    const button = e.target.closest('button');
+    if (!button) return;
+
+    e.preventDefault(); // Prevent any default button behavior
+
+    const item = button.closest('.bg-white');
+    const content = item.querySelector('div:nth-child(2)');
+    const icon = button.querySelector('svg');
+
+    // Toggle the clicked item
+    content.classList.toggle('hidden');
+    icon.classList.toggle('rotate-180');
+
+    // Close other open items
+    const allItems = accordion.querySelectorAll('.bg-white');
+    allItems.forEach((otherItem) => {
+      if (otherItem !== item) {
+        const otherContent = otherItem.querySelector('div:nth-child(2)');
+        const otherIcon = otherItem.querySelector('button svg');
+        otherContent.classList.add('hidden');
+        otherIcon.classList.remove('rotate-180');
+      }
+    });
+  });
+});
