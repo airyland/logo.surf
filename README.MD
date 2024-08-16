@@ -29,11 +29,11 @@ Logo.surf is a free, user-friendly tool that allows you to quickly generate prof
 
 Check out our other tools and services:
 
-- [DNS.fish](https://dns.fish) - DNS lookup and diagnostics
+- [DNS.fish](https://dns.fish) - Domain DNS lookup 
 - [IP.network](https://www.ip.network) - IP address information and tools
-- [Favicon.im](https://Favicon.im) - Favicon generator and management
-- [Small.im](https://Small.im) - URL shortener service
-- [Query.domains](https://Query.domains) - Domain name search and information
+- [Favicon.im](https://Favicon.im) - Grab Favicon of any website
+- [Small.im](https://Small.im) - Image comperssor and converter
+- [Query.domains](https://Query.domains) - Domain availability checker and whois lookup
 - [RedirectCheck](https://www.redirectcheck.org) - URL redirect checker
 
 ## Contributing
