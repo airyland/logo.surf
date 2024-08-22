@@ -561,7 +561,7 @@ const generateFavicons = async () => {
   zip.file("favicon.svg", svgString);
 
   // Add PNGs
-  const sizes = [16, 32, 180, 512, 2048];
+  const sizes = [16, 32, 180, 192, 512, 2048];
   for (let size of sizes) {
     const blob = await createFavicon(size);
     zip.file(`favicon-${size}x${size}.png`, blob);
