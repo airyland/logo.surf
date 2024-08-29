@@ -35,6 +35,7 @@ Check out our other tools and services:
 - [IP.network](https://www.ip.network) - IP address information and tools
 - [Favicon.im](https://Favicon.im) - Grab Favicon of any website
 - [Small.im](https://Small.im) - Image comperssor and converter
+- [Base64.sh](https://www.base64.sh) - Base64 encoder and decoder
 - [Query.domains](https://Query.domains) - Domain availability checker and whois lookup
 - [RedirectCheck](https://www.redirectcheck.org) - URL redirect checker
 
