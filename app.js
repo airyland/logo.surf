@@ -581,7 +581,10 @@ const generateFavicons = async () => {
   const content = await zip.generateAsync({
     type: "blob"
   });
-  saveAs(content, "favicons.zip");
+
+  const date = new Date()
+  const name = `${document.getElementById('text').value.trim()}-favicons-${date.getFullYear()}${date.getMonth()+1}${date.getDate()}${date.getHours()}${date.getMinutes()}.zip`
+  saveAs(content, name);
 };
 
 // Color picker setup
