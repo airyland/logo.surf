@@ -562,17 +562,21 @@ const generateFavicons = async () => {
 
   // Add PNGs
   const sizes = [16, 32, 180, 192, 512, 2048];
+  const nameMap = {
+    "180": "apple-touch-icon.png"
+  }
   for (let size of sizes) {
     const blob = await createFavicon(size);
-    zip.file(`favicon-${size}x${size}.png`, blob);
+    zip.file(nameMap[size] || `favicon-${size}x${size}.png`, blob);
   }
 
   // Add ICO (16x16 and 32x32 combined)
   const ico16 = await createFavicon(16);
   const ico32 = await createFavicon(32);
+  const ico48 = await createFavicon(48);
   // Note: Proper ICO creation requires additional processing
   // This is a simplified version
-  const icoBlob = new Blob([ico16, ico32], {
+  const icoBlob = new Blob([ico16, ico32, ico48], {
     type: "image/x-icon"
   });
   zip.file("favicon.ico", icoBlob);
