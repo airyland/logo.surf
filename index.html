@@ -159,9 +159,21 @@
               <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">Settings</h2>
               <div class="mb-4">
                 <label for="text" class="block mb-2 text-gray-600">Text</label>
-                <input type="text" id="text" class="w-full border rounded px-3 py-2" value="AI">
+                <textarea type="text" id="text" class="w-full border rounded px-3 py-2">AI</textarea>
                 <p class="text-xs text-gray-600 mt-2">Emojis are supported. Search & copy emoji on <a href="https://emojispark.com" target="_blank" class="inline-block underline">EmojiSpark.com</a>
                 </p>
+              </div>
+              <div class="flex gap-2.5" id="multipleLineConfig">
+                <div class="mb-4 flex-1">
+                  <label for="textLead" class="block mb-2 text-gray-600">Text Lead</label>
+                  <input type="range" id="textLead" min="-3" max="3" value="-1" step="0.01" class="w-full">
+                  <span id="textLeadValue" class="text-sm text-gray-500">-1</span>
+                </div>
+                <div class="mb-4 flex-1">
+                  <label for="textLineHeight" class="block mb-2 text-gray-600">Text Line Height</label>
+                  <input type="range" id="textLineHeight" min="-3" max="3" value="1" step="0.01" class="w-full">
+                  <span id="textLineHeightValue" class="text-sm text-gray-500">1</span>
+                </div>
               </div>
               <div class="flex flex-wrap -mx-2 mb-4">
                 <div class="w-1/2 px-2">
