@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="{{lang}}" {{#if isRtl}}dir="rtl"{{/if}}>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{t.blog.title}} - {{t.meta.title}}</title>
+    <meta name="description" content="{{t.blog.description}}">
+    <meta name="keywords" content="logo design blog, favicon tutorials, branding tips, logo generator guide">
+    
+    <!-- SEO and Language Tags -->
+    <link rel="canonical" href="{{canonicalUrl}}/blog">
+    {{#each alternateUrls}}
+    <link rel="alternate" hreflang="{{@key}}" href="{{this}}/blog">
+    {{/each}}
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{t.blog.title}} - {{t.meta.title}}">
+    <meta property="og:description" content="{{t.blog.description}}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{canonicalUrl}}/blog">
+    <meta property="og:image" content="https://www.logo.surf/favicon-512x512.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{t.blog.title}} - {{t.meta.title}}">
+    <meta name="twitter:description" content="{{t.blog.description}}">
+    <meta name="twitter:image" content="https://www.logo.surf/favicon-512x512.png">
+    <meta name="twitter:creator" content="@we_webmaster">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="2048x2048" href="/favicon-2048x2048.png">
+    <script defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      'theme': '#111827',
+                      'theme-dark': '#020617',
+                  }
+              }
+          }
+      }
+    </script>
+    <style>
+      body {
+          font-family: 'Poppins', sans-serif;
+          {{#if isRtl}}direction: rtl;{{/if}}
+      }
+      .base-button {
+          background: #111827;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 4px;
+          transition: all .3s ease;
+      }
+      .base-button:hover {
+          background: #374151;
+      }
+      .blog-card {
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .blog-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+          <a href="/" class="text-2xl font-bold text-theme">Logo.Surf</a>
+          <nav class="hidden md:flex space-x-6">
+            <a href="/" class="text-gray-600 hover:text-theme transition-colors">{{#if t.nav.home}}{{t.nav.home}}{{else}}Home{{/if}}</a>
+            <a href="/blog" class="text-theme font-medium">{{#if t.nav.blog}}{{t.nav.blog}}{{else}}Blog{{/if}}</a>
+          </nav>
+        </div>
+        <div class="language-switcher">
+          <button id="languageToggle" class="flex items-center space-x-2 px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+            <span>{{currentLanguageName}}</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="languageDropdown" class="language-dropdown">
+            {{#each languages}}
+            <a href="/{{@key}}/blog" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{name}}</a>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <!-- Blog Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{t.blog.title}}</h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">{{t.blog.description}}</p>
+      </div>
+
+      <!-- Blog Posts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {{#each posts}}
+        <article class="blog-card bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="p-6">
+            <div class="flex items-center text-sm text-gray-500 mb-3">
+              <time datetime="{{date}}">{{formatDate date}}</time>
+              <span class="mx-2">•</span>
+              <span>{{readTime}}</span>
+            </div>
+            
+            <h2 class="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
+              <a href="/blog/{{slug}}" class="hover:text-theme transition-colors">{{title}}</a>
+            </h2>
+            
+            <p class="text-gray-600 mb-4 line-clamp-3">{{excerpt}}</p>
+            
+            {{#if tags}}
+            <div class="flex flex-wrap gap-2 mb-4">
+              {{#each tags}}
+              <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">{{this}}</span>
+              {{/each}}
+            </div>
+            {{/if}}
+            
+            <a href="/blog/{{slug}}" class="inline-flex items-center text-theme hover:text-theme-dark transition-colors">
+              {{../t.blog.readMore}}
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </article>
+        {{/each}}
+      </div>
+
+      {{#unless posts}}
+      <div class="text-center py-12">
+        <h3 class="text-xl font-medium text-gray-900 mb-2">{{#if t.blog.noPosts}}{{t.blog.noPosts}}{{else}}No blog posts yet{{/if}}</h3>
+        <p class="text-gray-600">{{#if t.blog.noPostsDesc}}{{t.blog.noPostsDesc}}{{else}}Check back soon for helpful articles about logo design and branding.{{/if}}</p>
+      </div>
+      {{/unless}}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-16">
+      <div class="max-w-6xl mx-auto px-4 py-8">
+        <div class="text-center">
+          <p class="text-gray-600">© 2025 Logo.Surf. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Language switcher functionality
+      document.getElementById('languageToggle').addEventListener('click', function() {
+        const dropdown = document.getElementById('languageDropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const switcher = document.querySelector('.language-switcher');
+        const dropdown = document.getElementById('languageDropdown');
+        if (!switcher.contains(event.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>

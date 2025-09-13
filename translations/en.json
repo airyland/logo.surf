@@ -123,6 +123,22 @@
     "title": "Available in Multiple Languages",
     "note": "Select your preferred language above or from the links below"
   },
+  "blog": {
+    "title": "Logo Design Blog",
+    "description": "Tips, tutorials, and insights about logo design, branding, and favicon creation. Learn how to create professional logos for your business.",
+    "readMore": "Read More",
+    "publishedOn": "Published on",
+    "author": "By",
+    "back": "Back",
+    "allPosts": "All Posts",
+    "backToBlog": "Back to Blog",
+    "noPosts": "No blog posts yet",
+    "noPostsDesc": "Check back soon for helpful articles about logo design and branding."
+  },
+  "nav": {
+    "home": "Home",
+    "blog": "Blog"
+  },
   "footer": {
     "follow_on_x": "Follow us on X",
     "disclaimer": "Users are responsible for ensuring they have the rights to use any text, fonts, or other elements in their logos and favicons.",

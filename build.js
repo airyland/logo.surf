@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const Handlebars = require('handlebars');
+const { buildBlogPosts } = require('./scripts/build-blog');
 
 // Configuration
 const config = {
@@ -139,13 +140,91 @@ async function copyStaticAssets() {
   }
 }
 
-function generateSitemap() {
+async function generateBlogPages() {
+  console.log('📝 Generating blog pages...');
+  
+  // Load blog data
+  const blogDataPath = path.join('data/blog/posts.json');
+  if (!fs.existsSync(blogDataPath)) {
+    console.log('⚠️  No blog data found, skipping blog pages...');
+    return { posts: [], count: 0 };
+  }
+  
+  const blogData = JSON.parse(fs.readFileSync(blogDataPath, 'utf8'));
+  const posts = blogData.posts || [];
+  
+  if (posts.length === 0) {
+    console.log('⚠️  No published posts found, skipping blog pages...');
+    return blogData;
+  }
+  
+  // Load templates
+  const blogIndexTemplate = Handlebars.compile(
+    fs.readFileSync('templates/blog/blog-index.hbs', 'utf8')
+  );
+  const blogPostTemplate = Handlebars.compile(
+    fs.readFileSync('templates/blog/blog-post.hbs', 'utf8')
+  );
+  
+  const translations = loadTranslations();
+  
+  // Generate pages for each language
+  for (const [lang, langInfo] of Object.entries(config.supportedLanguages)) {
+    if (!translations[lang]) continue;
+    
+    console.log(`  📄 Building blog pages for ${lang}...`);
+    
+    // Base URL for this language
+    const baseUrl = lang === 'en' ? '' : `/${lang === 'zh-hans' ? 'zh-CN' : lang === 'zh-hant' ? 'zh-TW' : lang}`;
+    
+    // Blog index page context
+    const blogIndexContext = {
+      lang: lang,
+      isRtl: langInfo.dir === 'rtl',
+      currentLanguageName: langInfo.name,
+      t: translations[lang],
+      posts: posts,
+      canonicalUrl: getLanguageUrl(lang).replace(/\/$/, ''),
+      alternateUrls: generateAlternateUrls(),
+      languages: Object.entries(config.supportedLanguages).map(([code, info]) => ({
+        code,
+        name: info.name
+      }))
+    };
+    
+    // Generate blog index page
+    const blogIndexHtml = blogIndexTemplate(blogIndexContext);
+    const blogIndexPath = path.join(config.outputDir, baseUrl, 'blog', 'index.html');
+    ensureDirectoryExists(blogIndexPath);
+    fs.writeFileSync(blogIndexPath, blogIndexHtml);
+    
+    // Generate individual post pages
+    for (const post of posts) {
+      const postContext = {
+        ...blogIndexContext,
+        post: post
+      };
+      
+      const postHtml = blogPostTemplate(postContext);
+      const postPath = path.join(config.outputDir, baseUrl, 'blog', post.slug, 'index.html');
+      ensureDirectoryExists(postPath);
+      fs.writeFileSync(postPath, postHtml);
+    }
+  }
+  
+  console.log(`✅ Generated blog pages for ${posts.length} posts`);
+  return blogData;
+}
+
+function generateSitemap(blogData = null) {
   console.log('🗺️  Generating sitemap.xml...');
   
   const urls = [];
   
   for (const lang of Object.keys(config.supportedLanguages)) {
-    const url = getLanguageUrl(lang);
+    const langUrl = getLanguageUrl(lang);
+    const baseUrl = lang === 'en' ? '' : `/${lang === 'zh-hans' ? 'zh-CN' : lang === 'zh-hant' ? 'zh-TW' : lang}`;
+    
     const alternates = Object.entries(config.supportedLanguages).map(([altLang]) => {
       // Use proper hreflang codes
       const hreflangMapping = {
@@ -159,13 +238,42 @@ function generateSitemap() {
       };
     });
     
+    // Main page
     urls.push({
-      loc: url,
+      loc: langUrl,
       lastmod: new Date().toISOString().split('T')[0],
       changefreq: 'weekly',
       priority: lang === 'en' ? '1.0' : '0.8',
       alternates: alternates
     });
+    
+    // Blog index page
+    urls.push({
+      loc: `${langUrl}blog/`,
+      lastmod: new Date().toISOString().split('T')[0],
+      changefreq: 'weekly',
+      priority: '0.7',
+      alternates: alternates.map(alt => ({
+        ...alt,
+        url: `${alt.url}blog/`
+      }))
+    });
+    
+    // Individual blog posts
+    if (blogData && blogData.posts) {
+      for (const post of blogData.posts) {
+        urls.push({
+          loc: `${langUrl}blog/${post.slug}/`,
+          lastmod: post.date || new Date().toISOString().split('T')[0],
+          changefreq: 'monthly',
+          priority: '0.6',
+          alternates: alternates.map(alt => ({
+            ...alt,
+            url: `${alt.url}blog/${post.slug}/`
+          }))
+        });
+      }
+    }
   }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -214,6 +322,10 @@ async function buildSite() {
   }
   fs.mkdirpSync(config.outputDir);
 
+  // Build blog posts first
+  console.log('📝 Building blog posts...');
+  const blogData = await buildBlogPosts();
+
   // Load template and translations
   console.log('📖 Loading template and translations...');
   const templateContent = fs.readFileSync(config.templateFile, 'utf8');
@@ -250,11 +362,14 @@ async function buildSite() {
     fs.writeFileSync(outputPath, html);
   }
 
+  // Generate blog pages
+  await generateBlogPages();
+
   // Copy static assets
   await copyStaticAssets();
 
   // Generate SEO files
-  generateSitemap();
+  generateSitemap(blogData);
   generateRobotsTxt();
 
   // Create redirects for common language patterns
@@ -411,6 +526,16 @@ Handlebars.registerHelper('eq', function(a, b, options) {
 
 Handlebars.registerHelper('json', function(context) {
   return JSON.stringify(context);
+});
+
+Handlebars.registerHelper('formatDate', function(dateString) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
 });
 
 // Run the build

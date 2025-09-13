@@ -1,0 +1,15 @@
+project: logo.surf
+panes:
+  - name: Terminal
+    dir: ./
+    command: ''
+  - name: Pane 2
+    dir: ./
+    command: ''
+  - name: Pane 3
+    dir: ./
+    command: ''
+layout: vertical
+autoRun: false
+urlTabs: []
+quickCommands: []
