@@ -3,13 +3,15 @@ let defaultSize = 512
 const generateIconSVG = (options) => {
   const {
     text = 'AI',
-      size = defaultSize,
-      bgColor = '#131516',
-      radius = 80,
-      fontFamily = 'Arial',
-      fontWeight = 'normal',
-      textColor = '#70e000',
-      verticalOffset = 0
+    textLead = -1,
+    textLineHeight = 1,
+    size = defaultSize,
+    bgColor = '#131516',
+    radius = 80,
+    fontFamily = 'Arial',
+    fontWeight = 'normal',
+    textColor = '#70e000',
+    verticalOffset = 0
   } = options;
 
   const svgNS = "http://www.w3.org/2000/svg";
@@ -33,7 +35,14 @@ const generateIconSVG = (options) => {
   textElement.setAttribute("font-family", fontFamily);
   textElement.setAttribute("font-weight", fontWeight);
   textElement.setAttribute("fill", textColor);
-  textElement.textContent = text;
+  textElement.innerHTML = text.replace(/\r\n|\r/g, '\n').split('\n')[0] + text
+    .replace(/\r\n|\r/g, '\n')
+    .split('\n')
+    .slice(1)
+    .map((item) => {
+      return '<tspan dx="'+textLead+'em" dy="'+textLineHeight + 'em">' + item + '</tspan>'
+    }).join('')
+
   svg.appendChild(textElement);
 
   const adjustTextSizeAndPosition = () => {
@@ -506,6 +515,8 @@ const applyColorScheme = (index) => {
 
 const defaultSettings = {
   text: 'AI',
+  textLead: -1,
+  textLineHeight: 1,
   size: defaultSize,
   bgColor: '#131516',
   radius: 80,
@@ -518,6 +529,8 @@ const defaultSettings = {
 const generateIcon = () => {
   const options = {
     text: document.getElementById('text').value,
+    textLead: parseFloat(document.getElementById('textLead').value),
+    textLineHeight: parseFloat(document.getElementById('textLineHeight').value),
     size: parseInt(document.getElementById('size').value),
     bgColor: document.getElementById('bgColor').value,
     radius: parseInt(document.getElementById('radius').value),
@@ -641,6 +654,8 @@ const resetToDefault = () => {
     }
   });
   document.getElementById('verticalOffsetValue').textContent = '0%';
+  document.getElementById('textLeadValue').textContent = -1;
+  document.getElementById('textLineHeightValue').textContent = 1;
 
   generateIcon();
 };
@@ -723,6 +738,24 @@ const verticalOffsetValue = document.getElementById('verticalOffsetValue');
 verticalOffsetInput.addEventListener('input', function() {
   console.log('changed', this.value)
   verticalOffsetValue.textContent = `${this.value}%`;
+  generateIcon();
+});
+
+const textLeadInput = document.getElementById('textLead');
+const textLeadValue = document.getElementById('textLeadValue');
+
+textLeadInput.addEventListener('input', function() {
+  console.log('changed', this.value)
+  textLeadValue.textContent = this.value;
+  generateIcon();
+});
+
+const textLineHeightInput = document.getElementById('textLineHeight');
+const textLineHeightValue = document.getElementById('textLineHeightValue');
+
+textLineHeightInput.addEventListener('input', function() {
+  console.log('changed', this.value)
+  textLineHeightValue.textContent = this.value;
   generateIcon();
 });
 
@@ -1611,6 +1644,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function applyConfig(config) {
   document.getElementById('text').value = config.text;
+  document.getElementById('textLead').value = config.textLead;
+  document.getElementById('textLineHeight').value = config.textLineHeight;
   document.getElementById('size').value = config.size === 64 ? config.size * 8 : config.size;
   document.getElementById('bgColor').value = config.bgColor;
   document.getElementById('textColor').value = config.textColor;
