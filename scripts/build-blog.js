@@ -54,18 +54,9 @@ function estimateReadingTime(content) {
   return `${minutes} min read`;
 }
 
-// Function to process markdown content (convert # to ##)
+// Function to process markdown content
 function processMarkdownContent(content) {
-  return content
-    .split('\n')
-    .map(line => {
-      // Convert # to ##, ## to ###, etc.
-      if (line.match(/^#+\s/)) {
-        return '#' + line;
-      }
-      return line;
-    })
-    .join('\n');
+  return content;
 }
 
 async function buildBlogPosts() {
@@ -111,7 +102,9 @@ async function buildBlogPosts() {
         title: frontmatter.title || 'Untitled',
         description: excerpt,
         date: frontmatter.date || new Date().toISOString().split('T')[0],
+        lastUpdated: frontmatter.lastUpdated || null,
         author: frontmatter.author || 'Logo.surf Team',
+        authorBio: frontmatter.authorBio || null,
         tags: frontmatter.tags || [],
         keywords: frontmatter.keywords || '',
         image: frontmatter.image || '/images/blog/default.jpg',
@@ -121,7 +114,8 @@ async function buildBlogPosts() {
         published: frontmatter.published !== false, // Default to published
         content: htmlContent,
         excerpt: excerpt,
-        filename: file
+        filename: file,
+        faq: frontmatter.faq || null
       };
       
       posts.push(post);

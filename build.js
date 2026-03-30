@@ -122,6 +122,7 @@ async function copyStaticAssets() {
     'favicon-2048x2048.png',
     'favicon.ico',
     'assets',
+    'gradient-favicon',
     'LICENSE',
     'README.MD'
   ];
@@ -220,6 +221,15 @@ function generateSitemap(blogData = null) {
   console.log('🗺️  Generating sitemap.xml...');
   
   const urls = [];
+  const today = new Date().toISOString().split('T')[0];
+
+  urls.push({
+    loc: `${config.baseUrl}/gradient-favicon/`,
+    lastmod: today,
+    changefreq: 'monthly',
+    priority: '0.7',
+    alternates: []
+  });
   
   for (const lang of Object.keys(config.supportedLanguages)) {
     const langUrl = getLanguageUrl(lang);
@@ -241,7 +251,7 @@ function generateSitemap(blogData = null) {
     // Main page
     urls.push({
       loc: langUrl,
-      lastmod: new Date().toISOString().split('T')[0],
+      lastmod: today,
       changefreq: 'weekly',
       priority: lang === 'en' ? '1.0' : '0.8',
       alternates: alternates
@@ -250,7 +260,7 @@ function generateSitemap(blogData = null) {
     // Blog index page
     urls.push({
       loc: `${langUrl}blog/`,
-      lastmod: new Date().toISOString().split('T')[0],
+      lastmod: today,
       changefreq: 'weekly',
       priority: '0.7',
       alternates: alternates.map(alt => ({
@@ -526,6 +536,11 @@ Handlebars.registerHelper('eq', function(a, b, options) {
 
 Handlebars.registerHelper('json', function(context) {
   return JSON.stringify(context);
+});
+
+Handlebars.registerHelper('substring', function(str, start, length) {
+  if (!str) return '';
+  return str.substring(start, length);
 });
 
 Handlebars.registerHelper('formatDate', function(dateString) {

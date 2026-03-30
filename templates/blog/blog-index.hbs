@@ -59,6 +59,35 @@
       .base-button:hover {
           background: #374151;
       }
+      .language-switcher {
+          position: relative;
+          display: inline-block;
+      }
+      .language-dropdown {
+          display: none;
+          position: absolute;
+          top: 100%;
+          {{#if isRtl}}left: 0;{{else}}right: 0;{{/if}}
+          background: white;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          min-width: 160px;
+          z-index: 50;
+      }
+      .language-dropdown a {
+          display: block;
+          padding: 10px 16px;
+          color: #374151;
+          text-decoration: none;
+          border-bottom: 1px solid #f3f4f6;
+      }
+      .language-dropdown a:hover {
+          background-color: #f9fafb;
+      }
+      .language-dropdown a:last-child {
+          border-bottom: none;
+      }
       .blog-card {
           transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
@@ -151,7 +180,7 @@
     <footer class="bg-white border-t mt-16">
       <div class="max-w-6xl mx-auto px-4 py-8">
         <div class="text-center">
-          <p class="text-gray-600">© 2025 Logo.Surf. All rights reserved.</p>
+          <p class="text-gray-600">© 2026 Logo.Surf. All rights reserved.</p>
         </div>
       </div>
     </footer>

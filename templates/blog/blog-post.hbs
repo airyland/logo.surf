@@ -53,7 +53,7 @@
         }
       },
       "datePublished": "{{post.date}}T00:00:00Z",
-      "dateModified": "{{post.date}}T00:00:00Z",
+      "dateModified": "{{#if post.lastUpdated}}{{post.lastUpdated}}{{else}}{{post.date}}{{/if}}T00:00:00Z",
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "{{canonicalUrl}}/blog/{{post.slug}}"
@@ -62,7 +62,28 @@
       "keywords": "{{post.keywords}}"
     }
     </script>
-    
+
+    {{#if post.faq}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {{#each post.faq}}
+        {
+          "@type": "Question",
+          "name": "{{this.question}}",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{this.answer}}"
+          }
+        }{{#unless @last}},{{/unless}}
+        {{/each}}
+      ]
+    }
+    </script>
+    {{/if}}
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -94,6 +115,35 @@
       }
       .base-button:hover {
           background: #374151;
+      }
+      .language-switcher {
+          position: relative;
+          display: inline-block;
+      }
+      .language-dropdown {
+          display: none;
+          position: absolute;
+          top: 100%;
+          {{#if isRtl}}left: 0;{{else}}right: 0;{{/if}}
+          background: white;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          min-width: 160px;
+          z-index: 50;
+      }
+      .language-dropdown a {
+          display: block;
+          padding: 10px 16px;
+          color: #374151;
+          text-decoration: none;
+          border-bottom: 1px solid #f3f4f6;
+      }
+      .language-dropdown a:hover {
+          background-color: #f9fafb;
+      }
+      .language-dropdown a:last-child {
+          border-bottom: none;
       }
       .prose {
         max-width: none;
@@ -161,6 +211,60 @@
       .prose strong {
         font-weight: 600;
         color: #111827;
+      }
+      .prose table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 0.875rem;
+      }
+      .prose th, .prose td {
+        border: 1px solid #e5e7eb;
+        padding: 0.75rem 1rem;
+        text-align: left;
+      }
+      .prose th {
+        background-color: #f9fafb;
+        font-weight: 600;
+        color: #111827;
+      }
+      .prose tr:hover {
+        background-color: #f9fafb;
+      }
+      .prose em {
+        font-style: italic;
+        color: #6b7280;
+      }
+      .prose ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+        list-style-type: decimal;
+      }
+      .prose ol li {
+        margin-bottom: 0.5rem;
+        line-height: 1.75;
+        color: #374151;
+      }
+      .author-bio {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+        background-color: #f9fafb;
+        border-radius: 0.5rem;
+        margin-top: 2rem;
+      }
+      .author-bio-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: #111827;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        flex-shrink: 0;
       }
     </style>
   </head>
@@ -231,11 +335,25 @@
           {{{post.content}}}
         </div>
 
+        <!-- Author Bio -->
+        {{#if post.authorBio}}
+        <div class="author-bio">
+          <div class="author-bio-avatar">{{substring post.author 0 1}}</div>
+          <div>
+            <div class="font-medium text-gray-900">{{post.author}}</div>
+            <p class="text-sm text-gray-600 mt-1">{{post.authorBio}}</p>
+          </div>
+        </div>
+        {{/if}}
+
         <!-- Article Footer -->
         <footer class="mt-12 pt-8 border-t border-gray-200">
           <div class="flex items-center justify-between">
             <div class="text-sm text-gray-500">
               {{#if t.blog.publishedOn}}{{t.blog.publishedOn}}{{else}}Published on{{/if}} <time datetime="{{post.date}}">{{formatDate post.date}}</time>
+              {{#if post.lastUpdated}}
+              <span class="mx-1">·</span> Updated <time datetime="{{post.lastUpdated}}">{{formatDate post.lastUpdated}}</time>
+              {{/if}}
             </div>
             <div class="flex space-x-4">
               <button onclick="window.history.back()" class="text-theme hover:text-theme-dark transition-colors">
@@ -264,7 +382,7 @@
     <footer class="bg-white border-t mt-16">
       <div class="max-w-6xl mx-auto px-4 py-8">
         <div class="text-center">
-          <p class="text-gray-600">© 2025 Logo.Surf. All rights reserved.</p>
+          <p class="text-gray-600">© 2026 Logo.Surf. All rights reserved.</p>
         </div>
       </div>
     </footer>
