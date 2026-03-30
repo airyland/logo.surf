@@ -1,0 +1,74 @@
+{
+  "meta_title": "免费渐变网站图标生成器",
+  "meta_description": "在线免费制作精美的渐变网站图标（Favicon）。自定义颜色、形状和角度，支持下载 SVG 和 PNG 格式。适用于网站、应用和品牌设计。",
+  "meta_keywords": "渐变图标生成器, favicon制作, 免费图标工具, 渐变图标, 网站图标, SVG图标, favicon下载, 品牌图标生成器, gradient favicon",
+
+  "back_home": "返回 Logo.surf 首页",
+  "badge_text": "渐变图标工具",
+
+  "hero_badge": "柔和渐变图标",
+  "hero_title_prefix": "在线生成精美的",
+  "hero_title_highlight": "渐变网站图标",
+  "hero_description": "从柔和的暖橙到鲜明的品牌色，几步就能做出干净、专业的站点图标。先挑一个喜欢的风格，再微调颜色和形状，满意后直接下载即可。",
+  "cta_start": "开始制作",
+  "cta_browse": "浏览风格",
+
+  "feature1_title": "上手很快",
+  "feature1_desc": "先选一个接近你品牌感觉的方案，再稍微调一调颜色，就能很快得到可用结果。",
+  "feature2_title": "像素级预览",
+  "feature2_desc": "大图和小尺寸效果会同时更新，方便你判断图标在真实使用时是否清晰耐看。",
+  "feature3_title": "做好就能用",
+  "feature3_desc": "完成后直接下载常用格式，放进网站里就能立刻替换现有图标。",
+
+  "preview_title": "实时预览",
+  "preview_desc": "主图和小尺寸效果会同时刷新，方便你直接判断成品观感。",
+  "current_preview": "当前效果",
+  "browser_tab": "浏览器标签页",
+  "small_sizes": "小尺寸效果",
+
+  "controls_title": "自定义设置",
+  "controls_desc": "调整任意参数，左侧预览会立刻更新，适合边看边改。",
+  "color_highlight": "高光颜色",
+  "color_main": "主体颜色",
+  "color_accent": "底部强调色",
+  "shape": "形状",
+  "shape_circle": "圆形",
+  "shape_squircle": "圆角方形",
+  "shape_rounded_square": "柔和方形",
+  "gradient_angle": "渐变角度",
+  "highlight_intensity": "高光强度",
+
+  "quick_actions": "快速操作",
+  "download_svg": "下载 SVG",
+  "download_png": "下载 PNG",
+  "copy_svg_code": "复制图标代码",
+  "reset": "重新开始",
+  "embed_code_title": "网站接入代码",
+  "copy_code": "复制代码",
+
+  "presets_title": "灵感方案",
+  "presets_desc": "先选一个接近你品牌气质的方案，再继续细调会更顺手。",
+
+  "seo_what_title": "什么是渐变网站图标？",
+  "seo_what_desc": "渐变网站图标（Gradient Favicon）是一种使用平滑色彩过渡的小型网站图标，取代传统的纯色图标。它会显示在浏览器标签页、收藏夹和手机主屏幕上。渐变图标能为你的网站增添现代感和专业感，帮助你的品牌在众多打开的标签页中脱颖而出。",
+
+  "seo_why_title": "为什么选择渐变网站图标？",
+  "seo_why_desc": "一个精心设计的网站图标能强化品牌认知，提升用户体验。以下是渐变图标的优势：",
+  "seo_why_point1": "在浏览器标签页中更醒目——渐变色比纯色图标更能吸引注意力",
+  "seo_why_point2": "现代且专业的外观——渐变效果体现出对设计细节的关注",
+  "seo_why_point3": "增强品牌辨识度——独特的色彩组合让你的图标过目不忘",
+  "seo_why_point4": "适配所有尺寸——生成器会预览 16px、32px 和 64px 效果，确保各处都清晰",
+
+  "seo_how_title": "如何创建渐变网站图标",
+  "seo_how_desc": "使用我们的免费渐变图标生成器非常简单：1）选择一个预设风格或从零开始；2）自定义三个渐变颜色——高光色、主色和强调色；3）选择形状（圆形、圆角方形或柔和方形）；4）调整渐变角度和高光强度；5）在多种尺寸下预览效果；6）下载 SVG（矢量）或 PNG（位图）格式，添加到你的网站中。",
+
+  "seo_faq_title": "常见问题",
+  "faq1_q": "网站图标应该是多大尺寸？",
+  "faq1_a": "现代浏览器支持多种图标尺寸。建议至少提供 16x16、32x32 和 180x180（Apple Touch Icon）。我们的生成器输出可缩放的 SVG 文件，在任何尺寸下都保持清晰，同时也支持高分辨率 PNG 导出。",
+  "faq2_q": "生成的渐变图标可以商用吗？",
+  "faq2_a": "当然可以！使用我们工具创建的所有图标均完全免费，可用于个人和商业项目，无需标注来源。",
+  "faq3_q": "SVG 和 PNG 格式的图标有什么区别？",
+  "faq3_a": "SVG 图标是矢量格式，可以无损缩放到任何尺寸。PNG 图标是固定分辨率的位图。现代浏览器都支持 SVG 图标，但 PNG 兼容性更广。建议两种格式都下载备用。",
+  "faq4_q": "如何将图标添加到我的网站？",
+  "faq4_a": "在页面的 <head> 部分添加以下 HTML 代码：<link rel=\"icon\" type=\"image/svg+xml\" href=\"/favicon.svg\">。我们的生成器还提供了可直接复制的完整接入代码。"
+}

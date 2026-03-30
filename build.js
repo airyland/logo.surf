@@ -122,7 +122,6 @@ async function copyStaticAssets() {
     'favicon-2048x2048.png',
     'favicon.ico',
     'assets',
-    'gradient-favicon',
     'LICENSE',
     'README.MD'
   ];
@@ -217,19 +216,117 @@ async function generateBlogPages() {
   return blogData;
 }
 
+async function generateGradientFaviconPages() {
+  console.log('🎨 Generating gradient-favicon pages...');
+
+  const templatePath = 'templates/gradient-favicon/index.hbs';
+  if (!fs.existsSync(templatePath)) {
+    console.warn('⚠️  No gradient-favicon template found, skipping...');
+    return;
+  }
+
+  const templateContent = fs.readFileSync(templatePath, 'utf8');
+  const template = Handlebars.compile(templateContent);
+
+  // Only generate for en, zh-hans, zh-hant
+  const gfLanguages = {
+    'en': config.supportedLanguages['en'],
+    'zh-hans': config.supportedLanguages['zh-hans'],
+    'zh-hant': config.supportedLanguages['zh-hant']
+  };
+
+  // Load gradient-favicon translations
+  const gfTranslations = {};
+  for (const lang of Object.keys(gfLanguages)) {
+    const fileMapping = { 'zh-hans': 'zh-hans', 'zh-hant': 'zh-hant' };
+    const fileName = fileMapping[lang] || lang;
+    const filePath = path.join('translations/gradient-favicon', `${fileName}.json`);
+    if (fs.existsSync(filePath)) {
+      gfTranslations[lang] = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+  }
+
+  // Generate language options for language switcher (only gf languages)
+  function gfLanguageOptions(currentLang) {
+    return Object.entries(gfLanguages).map(([code, info]) => {
+      const urlMapping = { 'zh-hans': 'zh-CN', 'zh-hant': 'zh-TW' };
+      const urlCode = urlMapping[code] || code;
+      return {
+        code,
+        name: info.name,
+        url: code === 'en' ? '/' : `/${urlCode}/`,
+        current: code === currentLang
+      };
+    });
+  }
+
+  for (const [lang, langInfo] of Object.entries(gfLanguages)) {
+    if (!gfTranslations[lang]) {
+      console.warn(`⚠️  No gradient-favicon translation for ${lang}, skipping...`);
+      continue;
+    }
+
+    const pathMapping = { 'zh-hans': 'zh-CN', 'zh-hant': 'zh-TW' };
+    const urlLang = pathMapping[lang] || lang;
+    const basePath = lang === 'en' ? '' : `${urlLang}/`;
+
+    const context = {
+      lang: lang === 'zh-hans' ? 'zh-CN' : lang === 'zh-hant' ? 'zh-TW' : lang,
+      currentLanguageName: langInfo.name,
+      gf: gfTranslations[lang],
+      canonicalUrl: getLanguageUrl(lang),
+      alternateUrls: Object.fromEntries(
+        Object.keys(gfLanguages).map(l => {
+          const mapping = { 'zh-hans': 'zh-CN', 'zh-hant': 'zh-TW' };
+          return [mapping[l] || l, getLanguageUrl(l)];
+        })
+      ),
+      languageOptions: gfLanguageOptions(lang)
+    };
+
+    const html = template(context);
+    const outputPath = path.join(config.outputDir, basePath, 'gradient-favicon', 'index.html');
+    ensureDirectoryExists(outputPath);
+    fs.writeFileSync(outputPath, html);
+    console.log(`  📄 gradient-favicon/${lang} → ${basePath}gradient-favicon/index.html`);
+  }
+
+  // Copy app.js to gradient-favicon directory
+  const appJsSrc = 'gradient-favicon/app.js';
+  if (fs.existsSync(appJsSrc)) {
+    const appJsDest = path.join(config.outputDir, 'gradient-favicon', 'app.js');
+    ensureDirectoryExists(appJsDest);
+    fs.copyFileSync(appJsSrc, appJsDest);
+  }
+
+  console.log('✅ Generated gradient-favicon pages');
+}
+
 function generateSitemap(blogData = null) {
   console.log('🗺️  Generating sitemap.xml...');
   
   const urls = [];
   const today = new Date().toISOString().split('T')[0];
 
-  urls.push({
-    loc: `${config.baseUrl}/gradient-favicon/`,
-    lastmod: today,
-    changefreq: 'monthly',
-    priority: '0.7',
-    alternates: []
+  // Gradient favicon pages with language alternates
+  const gfLangs = ['en', 'zh-hans', 'zh-hant'];
+  const gfAlternates = gfLangs.map(l => {
+    const hreflangMapping = { 'zh-hans': 'zh-CN', 'zh-hant': 'zh-TW' };
+    return {
+      lang: hreflangMapping[l] || l,
+      url: `${getLanguageUrl(l)}gradient-favicon/`
+    };
   });
+  for (const lang of gfLangs) {
+    const langUrl = getLanguageUrl(lang);
+    urls.push({
+      loc: `${langUrl}gradient-favicon/`,
+      lastmod: today,
+      changefreq: 'monthly',
+      priority: '0.7',
+      alternates: gfAlternates
+    });
+  }
   
   for (const lang of Object.keys(config.supportedLanguages)) {
     const langUrl = getLanguageUrl(lang);
@@ -374,6 +471,9 @@ async function buildSite() {
 
   // Generate blog pages
   await generateBlogPages();
+
+  // Generate gradient-favicon pages
+  await generateGradientFaviconPages();
 
   // Copy static assets
   await copyStaticAssets();

@@ -1,0 +1,74 @@
+{
+  "meta_title": "免費漸層網站圖示產生器",
+  "meta_description": "線上免費製作精美的漸層網站圖示（Favicon）。自訂顏色、形狀和角度，支援下載 SVG 和 PNG 格式。適用於網站、應用程式和品牌設計。",
+  "meta_keywords": "漸層圖示產生器, favicon製作, 免費圖示工具, 漸層圖示, 網站圖示, SVG圖示, favicon下載, 品牌圖示產生器, gradient favicon",
+
+  "back_home": "返回 Logo.surf 首頁",
+  "badge_text": "漸層圖示工具",
+
+  "hero_badge": "柔和漸層圖示",
+  "hero_title_prefix": "線上產生精美的",
+  "hero_title_highlight": "漸層網站圖示",
+  "hero_description": "從柔和的暖橙到鮮明的品牌色，幾步就能做出乾淨、專業的網站圖示。先挑一個喜歡的風格，再微調顏色和形狀，滿意後直接下載即可。",
+  "cta_start": "開始製作",
+  "cta_browse": "瀏覽風格",
+
+  "feature1_title": "快速上手",
+  "feature1_desc": "先選一個接近你品牌感覺的方案，再稍微調整顏色，就能很快得到可用結果。",
+  "feature2_title": "像素級預覽",
+  "feature2_desc": "大圖和小尺寸效果會同時更新，方便你判斷圖示在實際使用時是否清晰耐看。",
+  "feature3_title": "做好就能用",
+  "feature3_desc": "完成後直接下載常用格式，放進網站裡就能立刻替換現有圖示。",
+
+  "preview_title": "即時預覽",
+  "preview_desc": "主圖和小尺寸效果會同時刷新，方便你直接判斷成品觀感。",
+  "current_preview": "目前效果",
+  "browser_tab": "瀏覽器分頁",
+  "small_sizes": "小尺寸效果",
+
+  "controls_title": "自訂設定",
+  "controls_desc": "調整任意參數，左側預覽會立刻更新，適合邊看邊改。",
+  "color_highlight": "高光顏色",
+  "color_main": "主體顏色",
+  "color_accent": "底部強調色",
+  "shape": "形狀",
+  "shape_circle": "圓形",
+  "shape_squircle": "圓角方形",
+  "shape_rounded_square": "柔和方形",
+  "gradient_angle": "漸層角度",
+  "highlight_intensity": "高光強度",
+
+  "quick_actions": "快速操作",
+  "download_svg": "下載 SVG",
+  "download_png": "下載 PNG",
+  "copy_svg_code": "複製圖示程式碼",
+  "reset": "重新開始",
+  "embed_code_title": "網站嵌入程式碼",
+  "copy_code": "複製程式碼",
+
+  "presets_title": "靈感方案",
+  "presets_desc": "先選一個接近你品牌氣質的方案，再繼續細調會更順手。",
+
+  "seo_what_title": "什麼是漸層網站圖示？",
+  "seo_what_desc": "漸層網站圖示（Gradient Favicon）是一種使用平滑色彩過渡的小型網站圖示，取代傳統的純色圖示。它會顯示在瀏覽器分頁、書籤和手機主畫面上。漸層圖示能為你的網站增添現代感和專業感，幫助你的品牌在眾多開啟的分頁中脫穎而出。",
+
+  "seo_why_title": "為什麼選擇漸層網站圖示？",
+  "seo_why_desc": "一個精心設計的網站圖示能強化品牌認知，提升使用者體驗。以下是漸層圖示的優勢：",
+  "seo_why_point1": "在瀏覽器分頁中更醒目——漸層色比純色圖示更能吸引注意力",
+  "seo_why_point2": "現代且專業的外觀——漸層效果體現出對設計細節的關注",
+  "seo_why_point3": "增強品牌辨識度——獨特的色彩組合讓你的圖示過目不忘",
+  "seo_why_point4": "適配所有尺寸——產生器會預覽 16px、32px 和 64px 效果，確保各處都清晰",
+
+  "seo_how_title": "如何建立漸層網站圖示",
+  "seo_how_desc": "使用我們的免費漸層圖示產生器非常簡單：1）選擇一個預設風格或從零開始；2）自訂三個漸層顏色——高光色、主色和強調色；3）選擇形狀（圓形、圓角方形或柔和方形）；4）調整漸層角度和高光強度；5）在多種尺寸下預覽效果；6）下載 SVG（向量）或 PNG（點陣）格式，加入到你的網站中。",
+
+  "seo_faq_title": "常見問題",
+  "faq1_q": "網站圖示應該是多大尺寸？",
+  "faq1_a": "現代瀏覽器支援多種圖示尺寸。建議至少提供 16x16、32x32 和 180x180（Apple Touch Icon）。我們的產生器輸出可縮放的 SVG 檔案，在任何尺寸下都保持清晰，同時也支援高解析度 PNG 匯出。",
+  "faq2_q": "產生的漸層圖示可以商用嗎？",
+  "faq2_a": "當然可以！使用我們工具建立的所有圖示均完全免費，可用於個人和商業專案，無需標註來源。",
+  "faq3_q": "SVG 和 PNG 格式的圖示有什麼差別？",
+  "faq3_a": "SVG 圖示是向量格式，可以無損縮放到任何尺寸。PNG 圖示是固定解析度的點陣圖。現代瀏覽器都支援 SVG 圖示，但 PNG 相容性更廣。建議兩種格式都下載備用。",
+  "faq4_q": "如何將圖示加入到我的網站？",
+  "faq4_a": "在頁面的 <head> 部分加入以下 HTML 程式碼：<link rel=\"icon\" type=\"image/svg+xml\" href=\"/favicon.svg\">。我們的產生器還提供了可直接複製的完整嵌入程式碼。"
+}

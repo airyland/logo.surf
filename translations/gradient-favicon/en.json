@@ -1,0 +1,74 @@
+{
+  "meta_title": "Free Gradient Favicon Generator",
+  "meta_description": "Create beautiful gradient favicons online for free. Customize colors, shapes, and angles, then download as SVG or PNG. Perfect for websites, apps, and brand identity.",
+  "meta_keywords": "gradient favicon generator, favicon maker, free favicon tool, gradient icon, website favicon, SVG favicon, favicon download, brand icon generator",
+
+  "back_home": "Back to Logo.surf",
+  "badge_text": "Gradient Favicon Tool",
+
+  "hero_badge": "Soft Gradient Favicons",
+  "hero_title_prefix": "Create Beautiful",
+  "hero_title_highlight": "Gradient Favicons Online",
+  "hero_description": "From soft warm tones to bold brand colors, design a clean, professional favicon in just a few steps. Pick a style you like, fine-tune the colors and shape, then download it instantly.",
+  "cta_start": "Start Creating",
+  "cta_browse": "Browse Styles",
+
+  "feature1_title": "Quick to Start",
+  "feature1_desc": "Choose a preset that matches your brand feel, adjust the colors slightly, and get a usable result in seconds.",
+  "feature2_title": "Pixel-Perfect Preview",
+  "feature2_desc": "The large preview and small-size previews update simultaneously, so you can judge how the favicon looks at real-world sizes.",
+  "feature3_title": "Ready to Use",
+  "feature3_desc": "Download in common formats when you're done, and replace your website's favicon immediately.",
+
+  "preview_title": "Live Preview",
+  "preview_desc": "The main preview and small-size previews update in real time, so you can judge the final result instantly.",
+  "current_preview": "Current",
+  "browser_tab": "Browser Tab",
+  "small_sizes": "Small Size Preview",
+
+  "controls_title": "Customize",
+  "controls_desc": "Adjust any control and see the result update immediately in the preview.",
+  "color_highlight": "Highlight Color",
+  "color_main": "Main Color",
+  "color_accent": "Accent Color",
+  "shape": "Shape",
+  "shape_circle": "Circle",
+  "shape_squircle": "Squircle",
+  "shape_rounded_square": "Rounded Square",
+  "gradient_angle": "Gradient Angle",
+  "highlight_intensity": "Highlight Intensity",
+
+  "quick_actions": "Quick Actions",
+  "download_svg": "Download SVG",
+  "download_png": "Download PNG",
+  "copy_svg_code": "Copy SVG Code",
+  "reset": "Reset",
+  "embed_code_title": "Website Embed Code",
+  "copy_code": "Copy Code",
+
+  "presets_title": "Style Presets",
+  "presets_desc": "Pick a preset that matches your brand personality, then fine-tune it to make it your own.",
+
+  "seo_what_title": "What Is a Gradient Favicon?",
+  "seo_what_desc": "A gradient favicon is a small website icon that uses smooth color transitions instead of flat colors. It appears in browser tabs, bookmarks, and mobile home screens. Gradient favicons add a modern, polished look to your website and help your brand stand out among dozens of open tabs.",
+
+  "seo_why_title": "Why Use a Gradient Favicon for Your Website?",
+  "seo_why_desc": "A well-designed favicon strengthens your brand identity and improves user experience. Here's why gradient favicons are a great choice:",
+  "seo_why_point1": "Stand out in browser tabs — gradient colors catch the eye more than flat solid icons",
+  "seo_why_point2": "Modern and professional appearance — gradients signal attention to design detail",
+  "seo_why_point3": "Better brand recognition — unique color combinations make your favicon memorable",
+  "seo_why_point4": "Works at all sizes — our generator previews your favicon at 16px, 32px, and 64px so it looks great everywhere",
+
+  "seo_how_title": "How to Create a Gradient Favicon",
+  "seo_how_desc": "Using our free gradient favicon generator is simple: 1) Choose a preset style or start from scratch; 2) Customize the three gradient colors — highlight, main, and accent; 3) Select a shape (circle, squircle, or rounded square); 4) Adjust the gradient angle and highlight intensity; 5) Preview at multiple sizes; 6) Download as SVG (vector) or PNG (raster) and add it to your website.",
+
+  "seo_faq_title": "Frequently Asked Questions",
+  "faq1_q": "What size should a favicon be?",
+  "faq1_a": "Modern browsers support multiple favicon sizes. We recommend providing at least 16x16, 32x32, and 180x180 (for Apple Touch Icon). Our generator outputs scalable SVG files that look crisp at any size, plus high-resolution PNG exports.",
+  "faq2_q": "Can I use this gradient favicon for commercial projects?",
+  "faq2_a": "Yes! All favicons created with our tool are completely free for personal and commercial use. No attribution required.",
+  "faq3_q": "What's the difference between SVG and PNG favicon formats?",
+  "faq3_a": "SVG favicons are vector-based and scale perfectly to any size without losing quality. PNG favicons are raster images with fixed resolution. Modern browsers support SVG favicons, but PNG is more universally compatible. We recommend downloading both.",
+  "faq4_q": "How do I add a favicon to my website?",
+  "faq4_a": "Add the following HTML to your page's <head> section: <link rel=\"icon\" type=\"image/svg+xml\" href=\"/favicon.svg\">. Our generator also provides a ready-to-use embed code snippet you can copy directly."
+}

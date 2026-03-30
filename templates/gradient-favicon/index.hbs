@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{gf.meta_title}} | Logo.surf</title>
+    <meta name="description" content="{{gf.meta_description}}">
+    <meta name="keywords" content="{{gf.meta_keywords}}">
+    <link rel="canonical" href="{{canonicalUrl}}gradient-favicon/">
+    {{#each alternateUrls}}
+    <link rel="alternate" hreflang="{{@key}}" href="{{this}}gradient-favicon/">
+    {{/each}}
+    <meta property="og:title" content="{{gf.meta_title}} | Logo.surf">
+    <meta property="og:description" content="{{gf.meta_description}}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{canonicalUrl}}gradient-favicon/">
+    <meta property="og:image" content="https://www.logo.surf/assets/logo.surf.preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{gf.meta_title}} | Logo.surf">
+    <meta name="twitter:description" content="{{gf.meta_description}}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "{{gf.meta_title}}",
+      "description": "{{gf.meta_description}}",
+      "url": "{{canonicalUrl}}gradient-favicon/",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Logo.Surf",
+        "url": "https://www.logo.surf"
+      }
+    }
+    </script>
+
+    <link rel="icon" type="image/png" href="/favicon-2048x2048.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    >
+    <script defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
+    <style>
+      :root {
+        color-scheme: light;
+        --page-bg: #fff8f1;
+        --panel-bg: rgba(255, 255, 255, 0.82);
+        --panel-border: rgba(255, 143, 56, 0.18);
+        --text-main: #25140a;
+        --text-muted: #6f4b37;
+        --accent: #ff7a00;
+        --accent-deep: #ff5226;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Manrope', sans-serif;
+        background:
+          radial-gradient(circle at 15% 20%, rgba(255, 193, 93, 0.55), transparent 30%),
+          radial-gradient(circle at 85% 15%, rgba(255, 122, 0, 0.22), transparent 28%),
+          linear-gradient(180deg, #fffaf4 0%, #fff4ea 52%, #fff8f2 100%);
+        color: var(--text-main);
+        min-height: 100vh;
+      }
+
+      h1,
+      h2,
+      h3,
+      .display-font {
+        font-family: 'Space Grotesk', sans-serif;
+      }
+
+      .glass-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--panel-border);
+        box-shadow: 0 18px 60px rgba(120, 52, 8, 0.08);
+        backdrop-filter: blur(16px);
+      }
+
+      .grid-bg {
+        background-color: #fff;
+        background-image:
+          linear-gradient(45deg, rgba(255, 188, 120, 0.14) 25%, transparent 25%),
+          linear-gradient(-45deg, rgba(255, 188, 120, 0.14) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, rgba(255, 188, 120, 0.14) 75%),
+          linear-gradient(-45deg, transparent 75%, rgba(255, 188, 120, 0.14) 75%);
+        background-size: 24px 24px;
+        background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+      }
+
+      .control-input,
+      .control-select {
+        width: 100%;
+        max-width: 100%;
+        border: 1px solid rgba(255, 143, 56, 0.18);
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 16px;
+        padding: 0.85rem 1rem;
+        color: var(--text-main);
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .control-input {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .control-select {
+        min-width: 0;
+      }
+
+      .control-input:focus,
+      .control-select:focus {
+        outline: none;
+        border-color: rgba(255, 122, 0, 0.58);
+        box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.12);
+      }
+
+      .slider {
+        accent-color: var(--accent);
+      }
+
+      .compact-color-card {
+        border: 1px solid rgba(255, 143, 56, 0.16);
+        background: rgba(255, 255, 255, 0.72);
+        border-radius: 18px;
+        padding: 0.8rem;
+      }
+
+      .compact-color-chip {
+        inline-size: 18px;
+        block-size: 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 20, 10, 0.1);
+        flex: none;
+      }
+
+      .compact-color-picker {
+        inline-size: 44px;
+        block-size: 44px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 143, 56, 0.18);
+        background: white;
+        padding: 0.25rem;
+        cursor: pointer;
+      }
+
+      .compact-input-row {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 0.75rem;
+        align-items: center;
+        min-width: 0;
+      }
+
+      .preset-button {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 143, 56, 0.18);
+        border-radius: 18px;
+        padding: 0.85rem;
+        text-align: left;
+        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      }
+
+      .preset-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(120, 52, 8, 0.1);
+      }
+
+      .preset-button.is-active {
+        border-color: rgba(255, 122, 0, 0.42);
+        box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.12);
+      }
+
+      .preset-preview {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 180px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 143, 56, 0.12);
+        background:
+          linear-gradient(180deg, rgba(255, 251, 247, 0.95), rgba(255, 245, 236, 0.92)),
+          linear-gradient(45deg, rgba(255, 188, 120, 0.08) 25%, transparent 25%),
+          linear-gradient(-45deg, rgba(255, 188, 120, 0.08) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, rgba(255, 188, 120, 0.08) 75%),
+          linear-gradient(-45deg, transparent 75%, rgba(255, 188, 120, 0.08) 75%);
+        background-size: auto, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+        background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0;
+      }
+
+      .preset-preview svg {
+        width: 132px;
+        height: 132px;
+        display: block;
+      }
+
+      .icon-shell svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .soft-pill {
+        border: 1px solid rgba(255, 143, 56, 0.15);
+        background: rgba(255, 255, 255, 0.68);
+      }
+
+      .language-switcher {
+        position: relative;
+        display: inline-block;
+      }
+      .language-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        min-width: 140px;
+        z-index: 50;
+      }
+      .language-dropdown a {
+        display: block;
+        padding: 8px 14px;
+        color: #374151;
+        text-decoration: none;
+        font-size: 0.875rem;
+        border-bottom: 1px solid #f3f4f6;
+      }
+      .language-dropdown a:hover {
+        background-color: #f9fafb;
+      }
+      .language-dropdown a:last-child {
+        border-bottom: none;
+      }
+
+      .seo-section h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #25140a;
+        margin-bottom: 0.75rem;
+      }
+      .seo-section h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #25140a;
+        margin-bottom: 0.5rem;
+      }
+      .seo-section p {
+        color: #6f4b37;
+        line-height: 1.75;
+        margin-bottom: 1rem;
+      }
+      .seo-section ul {
+        color: #6f4b37;
+        line-height: 1.75;
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .seo-section li {
+        margin-bottom: 0.25rem;
+      }
+      .faq-item summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: #25140a;
+        padding: 0.75rem 0;
+      }
+      .faq-item summary:hover {
+        color: #ff7a00;
+      }
+      .faq-item[open] summary {
+        color: #ff7a00;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="mx-auto flex min-h-screen w-full max-w-[1320px] flex-col px-4 py-6 sm:px-6 lg:px-8">
+      <header class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <a
+          href="/"
+          class="soft-pill inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-[#6f4b37] transition hover:border-orange-300 hover:text-[#25140a]"
+        >
+          <span>←</span>
+          <span>{{gf.back_home}}</span>
+        </a>
+        <div class="flex items-center gap-3">
+          <div class="soft-pill inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-sm text-[#8b5d42]">
+            <span class="display-font font-bold text-[#ff7a00]">New</span>
+            <span>{{gf.badge_text}}</span>
+          </div>
+          <div class="language-switcher">
+            <button id="languageToggle" class="soft-pill inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-[#6f4b37] transition hover:border-orange-300 hover:text-[#25140a]">
+              <span>{{currentLanguageName}}</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div id="languageDropdown" class="language-dropdown">
+              {{#each languageOptions}}
+              <a href="{{this.url}}gradient-favicon/">{{this.name}}</a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="mb-8">
+        <div class="glass-panel rounded-[36px] px-5 py-8 sm:px-8 sm:py-12 lg:px-12">
+          <div class="mx-auto max-w-4xl text-center">
+            <span class="soft-pill inline-flex rounded-full px-4 py-2 text-sm font-semibold text-[#9d6126]">
+              {{gf.hero_badge}}
+            </span>
+            <h1 class="display-font mt-5 text-4xl font-bold tracking-tight text-[#25140a] sm:text-5xl lg:text-6xl">
+              {{gf.hero_title_prefix}}
+              <span class="text-[#ff7a00]">{{gf.hero_title_highlight}}</span>
+            </h1>
+            <p class="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#6f4b37] sm:text-lg">
+              {{gf.hero_description}}
+            </p>
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="#workspace"
+                class="inline-flex items-center rounded-full bg-[#25140a] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#3a2114]"
+              >
+                {{gf.cta_start}}
+              </a>
+              <a
+                href="#presets"
+                class="inline-flex items-center rounded-full border border-orange-200 bg-white/85 px-5 py-3 text-sm font-semibold text-[#9d6126] transition hover:border-orange-300 hover:text-[#25140a]"
+              >
+                {{gf.cta_browse}}
+              </a>
+            </div>
+          </div>
+          <div class="mt-10 grid gap-3 sm:grid-cols-3">
+            <div class="glass-panel rounded-3xl p-4">
+              <div class="text-sm font-semibold text-[#9d6126]">{{gf.feature1_title}}</div>
+              <p class="mt-2 text-sm leading-6 text-[#6f4b37]">{{gf.feature1_desc}}</p>
+            </div>
+            <div class="glass-panel rounded-3xl p-4">
+              <div class="text-sm font-semibold text-[#9d6126]">{{gf.feature2_title}}</div>
+              <p class="mt-2 text-sm leading-6 text-[#6f4b37]">{{gf.feature2_desc}}</p>
+            </div>
+            <div class="glass-panel rounded-3xl p-4">
+              <div class="text-sm font-semibold text-[#9d6126]">{{gf.feature3_title}}</div>
+              <p class="mt-2 text-sm leading-6 text-[#6f4b37]">{{gf.feature3_desc}}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workspace" class="mb-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
+        <div class="glass-panel rounded-[32px] p-4 sm:p-5">
+          <div class="mb-3 flex items-center justify-between gap-4">
+            <div>
+              <h2 class="display-font text-2xl font-bold text-[#25140a]">{{gf.preview_title}}</h2>
+              <p class="mt-1 text-sm text-[#6f4b37]">{{gf.preview_desc}}</p>
+            </div>
+            <div class="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-[#9d6126]">
+              {{gf.current_preview}}
+            </div>
+          </div>
+
+          <div class="grid gap-3">
+            <div class="grid-bg flex aspect-square items-center justify-center rounded-[28px] border border-orange-100 px-8 py-1 sm:px-12 sm:py-2 lg:px-16 lg:py-3">
+              <div id="previewStage" class="icon-shell h-full w-full max-h-[760px] max-w-[760px]"></div>
+            </div>
+
+            <div class="grid gap-3 md:grid-cols-[0.88fr_1.12fr]">
+              <div class="glass-panel rounded-[24px] p-3">
+                <div class="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#9d6126]">{{gf.browser_tab}}</div>
+                <div class="rounded-2xl bg-white p-2.5 shadow-sm">
+                  <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2">
+                    <div id="tabPreview" class="icon-shell h-4 w-4 shrink-0"></div>
+                    <div class="min-w-0">
+                      <div class="truncate text-sm font-semibold text-slate-700">Logo.surf</div>
+                      <div class="truncate text-xs text-slate-400">logo.surf/gradient-favicon</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="glass-panel rounded-[24px] p-3">
+                <div class="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#9d6126]">{{gf.small_sizes}}</div>
+                <div class="grid grid-cols-3 gap-3">
+                  <div class="rounded-2xl bg-white p-2.5 text-center shadow-sm">
+                    <div id="preview64" class="icon-shell mx-auto h-16 w-16"></div>
+                    <div class="mt-1.5 text-xs font-medium text-[#6f4b37]">64 px</div>
+                  </div>
+                  <div class="rounded-2xl bg-white p-2.5 text-center shadow-sm">
+                    <div id="preview32" class="icon-shell mx-auto h-8 w-8"></div>
+                    <div class="mt-1.5 text-xs font-medium text-[#6f4b37]">32 px</div>
+                  </div>
+                  <div class="rounded-2xl bg-white p-2.5 text-center shadow-sm">
+                    <div id="preview16" class="icon-shell mx-auto h-4 w-4"></div>
+                    <div class="mt-1.5 text-xs font-medium text-[#6f4b37]">16 px</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel w-full overflow-hidden rounded-[32px] p-5 sm:p-6 lg:sticky lg:top-6 lg:max-w-[420px] lg:justify-self-end">
+          <div class="mb-6">
+            <h2 class="display-font text-2xl font-bold text-[#25140a]">{{gf.controls_title}}</h2>
+            <p class="mt-1 text-sm text-[#6f4b37]">{{gf.controls_desc}}</p>
+          </div>
+
+          <div class="grid min-w-0 gap-4">
+            <div class="grid gap-3">
+              <label class="compact-color-card">
+                <div class="mb-3 flex items-center gap-2">
+                  <div id="startSwatch" class="compact-color-chip"></div>
+                  <span class="text-sm font-semibold text-[#6f4b37]">{{gf.color_highlight}}</span>
+                </div>
+                <div class="compact-input-row">
+                  <input id="startColor" type="color" class="compact-color-picker">
+                  <input id="startColorHex" type="text" class="control-input" spellcheck="false">
+                </div>
+              </label>
+
+              <label class="compact-color-card">
+                <div class="mb-3 flex items-center gap-2">
+                  <div id="middleSwatch" class="compact-color-chip"></div>
+                  <span class="text-sm font-semibold text-[#6f4b37]">{{gf.color_main}}</span>
+                </div>
+                <div class="compact-input-row">
+                  <input id="middleColor" type="color" class="compact-color-picker">
+                  <input id="middleColorHex" type="text" class="control-input" spellcheck="false">
+                </div>
+              </label>
+
+              <label class="compact-color-card">
+                <div class="mb-3 flex items-center gap-2">
+                  <div id="endSwatch" class="compact-color-chip"></div>
+                  <span class="text-sm font-semibold text-[#6f4b37]">{{gf.color_accent}}</span>
+                </div>
+                <div class="compact-input-row">
+                  <input id="endColor" type="color" class="compact-color-picker">
+                  <input id="endColorHex" type="text" class="control-input" spellcheck="false">
+                </div>
+              </label>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2">
+              <label class="space-y-3">
+                <span class="text-sm font-semibold text-[#6f4b37]">{{gf.shape}}</span>
+                <select id="shape" class="control-select">
+                  <option value="circle">{{gf.shape_circle}}</option>
+                  <option value="squircle">{{gf.shape_squircle}}</option>
+                  <option value="rounded-square">{{gf.shape_rounded_square}}</option>
+                </select>
+              </label>
+
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold text-[#6f4b37]">{{gf.gradient_angle}}</span>
+                  <span id="angleValue" class="text-sm font-semibold text-[#9d6126]">0°</span>
+                </div>
+                <input id="angle" type="range" min="0" max="360" value="0" class="slider w-full">
+              </div>
+            </div>
+
+            <div class="grid gap-4">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold text-[#6f4b37]">{{gf.highlight_intensity}}</span>
+                  <span id="highlightValue" class="text-sm font-semibold text-[#9d6126]">76%</span>
+                </div>
+                <input id="highlight" type="range" min="0" max="100" value="76" class="slider w-full">
+              </div>
+            </div>
+
+            <div class="min-w-0 rounded-[28px] border border-orange-100 bg-white/80 p-4">
+              <div class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#9d6126]">{{gf.quick_actions}}</div>
+              <div class="grid gap-2 sm:grid-cols-2">
+                <button
+                  id="downloadSvg"
+                  type="button"
+                  class="rounded-2xl bg-[#25140a] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#3a2114]"
+                >
+                  {{gf.download_svg}}
+                </button>
+                <button
+                  id="downloadPng"
+                  type="button"
+                  class="rounded-2xl bg-[#ff7a00] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#ff641a]"
+                >
+                  {{gf.download_png}}
+                </button>
+                <button
+                  id="copySvg"
+                  type="button"
+                  class="rounded-2xl border border-orange-200 bg-white px-4 py-3 text-sm font-semibold text-[#9d6126] transition hover:border-orange-300 hover:text-[#25140a]"
+                >
+                  {{gf.copy_svg_code}}
+                </button>
+                <button
+                  id="resetControls"
+                  type="button"
+                  class="rounded-2xl border border-orange-200 bg-white px-4 py-3 text-sm font-semibold text-[#9d6126] transition hover:border-orange-300 hover:text-[#25140a]"
+                >
+                  {{gf.reset}}
+                </button>
+              </div>
+              <p id="statusText" class="mt-3 min-h-5 text-sm text-[#9d6126]"></p>
+            </div>
+
+            <div class="min-w-0 rounded-[28px] border border-orange-100 bg-white/80 p-4">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="display-font text-lg font-bold text-[#25140a]">{{gf.embed_code_title}}</h3>
+                <button
+                  id="copyHtml"
+                  type="button"
+                  class="rounded-full border border-orange-200 px-3 py-1.5 text-xs font-semibold text-[#9d6126] transition hover:border-orange-300 hover:text-[#25140a]"
+                >
+                  {{gf.copy_code}}
+                </button>
+              </div>
+              <pre class="max-h-52 max-w-full overflow-auto rounded-2xl bg-[#25140a] p-4 text-xs leading-6 text-orange-100"><code id="htmlSnippet"></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="presets" class="mb-8 grid gap-6">
+        <div class="glass-panel rounded-[32px] p-5 sm:p-6">
+          <div class="mb-4">
+            <h2 class="display-font text-2xl font-bold text-[#25140a]">{{gf.presets_title}}</h2>
+            <p class="mt-1 text-sm text-[#6f4b37]">{{gf.presets_desc}}</p>
+          </div>
+          <div id="presetList" class="grid gap-3 md:grid-cols-2 xl:grid-cols-4"></div>
+        </div>
+      </section>
+
+      <!-- SEO Content Section -->
+      <section class="mb-8 grid gap-6">
+        <div class="glass-panel seo-section rounded-[32px] p-6 sm:p-8">
+          <h2>{{gf.seo_what_title}}</h2>
+          <p>{{gf.seo_what_desc}}</p>
+
+          <h2>{{gf.seo_why_title}}</h2>
+          <p>{{gf.seo_why_desc}}</p>
+          <ul>
+            <li>{{gf.seo_why_point1}}</li>
+            <li>{{gf.seo_why_point2}}</li>
+            <li>{{gf.seo_why_point3}}</li>
+            <li>{{gf.seo_why_point4}}</li>
+          </ul>
+
+          <h2>{{gf.seo_how_title}}</h2>
+          <p>{{gf.seo_how_desc}}</p>
+
+          <h2>{{gf.seo_faq_title}}</h2>
+          <div class="space-y-1">
+            <details class="faq-item border-b border-orange-100">
+              <summary>{{gf.faq1_q}}</summary>
+              <p class="pb-3 text-sm">{{gf.faq1_a}}</p>
+            </details>
+            <details class="faq-item border-b border-orange-100">
+              <summary>{{gf.faq2_q}}</summary>
+              <p class="pb-3 text-sm">{{gf.faq2_a}}</p>
+            </details>
+            <details class="faq-item border-b border-orange-100">
+              <summary>{{gf.faq3_q}}</summary>
+              <p class="pb-3 text-sm">{{gf.faq3_a}}</p>
+            </details>
+            <details class="faq-item border-b border-orange-100">
+              <summary>{{gf.faq4_q}}</summary>
+              <p class="pb-3 text-sm">{{gf.faq4_a}}</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-auto pt-8 pb-4 text-center text-sm text-[#8b5d42]">
+        <p>&copy; 2026 <a href="/" class="hover:text-[#25140a] transition-colors">Logo.Surf</a>. All rights reserved.</p>
+      </footer>
+    </main>
+
+    <script src="/gradient-favicon/app.js"></script>
+    <script>
+      document.getElementById('languageToggle').addEventListener('click', function() {
+        const dropdown = document.getElementById('languageDropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      });
+      document.addEventListener('click', function(event) {
+        const switcher = document.querySelector('.language-switcher');
+        const dropdown = document.getElementById('languageDropdown');
+        if (!switcher.contains(event.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>
