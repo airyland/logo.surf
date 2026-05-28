@@ -1,41 +1,49 @@
+---
+const { lang, isRtl, languageName, t, canonicalUrl, alternateUrls, languageOptions } = Astro.props;
+const bodyDirectionRule = isRtl ? 'direction: rtl;' : '';
+const dropdownSideRule = isRtl ? 'left: 0;' : 'right: 0;';
+const startStarMargin = isRtl ? 'ml-2' : 'mr-2';
+const endStarMargin = isRtl ? 'mr-2' : 'ml-2';
+const footerIconMargin = isRtl ? 'ml-2' : 'mr-2';
+---
 <!DOCTYPE html>
-<html lang="{{lang}}" {{#if isRtl}}dir="rtl"{{/if}}>
+<html lang={lang} dir={isRtl ? 'rtl' : undefined}>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{t.meta.title}}</title>
-    <meta name="description" content="{{t.meta.description}}">
-    <meta name="keywords" content="{{t.meta.keywords}}">
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description}>
+    <meta name="keywords" content={t.meta.keywords}>
     
     <!-- SEO and Language Tags -->
-    <link rel="canonical" href="{{canonicalUrl}}">
-    {{#each alternateUrls}}
-    <link rel="alternate" hreflang="{{@key}}" href="{{this}}">
-    {{/each}}
+    <link rel="canonical" href={canonicalUrl}>
+    {Object.entries(alternateUrls).map(([key, href]) => (
+    <link rel="alternate" hreflang={key} href={href}>
+    ))}
     
     <!-- Open Graph -->
-    <meta property="og:title" content="{{t.meta.title}}">
-    <meta property="og:description" content="{{t.meta.description}}">
+    <meta property="og:title" content={t.meta.title}>
+    <meta property="og:description" content={t.meta.description}>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{canonicalUrl}}">
+    <meta property="og:url" content={canonicalUrl}>
     <meta property="og:image" content="https://www.logo.surf/favicon-512x512.png">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{t.meta.title}}">
-    <meta name="twitter:description" content="{{t.meta.description}}">
+    <meta name="twitter:title" content={t.meta.title}>
+    <meta name="twitter:description" content={t.meta.description}>
     <meta name="twitter:image" content="https://www.logo.surf/favicon-512x512.png">
     <meta name="twitter:creator" content="@we_webmaster">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="2048x2048" href="/favicon-2048x2048.png">
-    <script defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
-    <script>
+    <script is:inline defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
+    <script is:inline>
       tailwind.config = {
           theme: {
               extend: {
@@ -47,10 +55,10 @@
           }
       }
     </script>
-    <style>
+    <style is:inline set:html={`
       body {
           font-family: 'Poppins', sans-serif;
-          {{#if isRtl}}direction: rtl;{{/if}}
+          ${bodyDirectionRule}
       }
       .color-picker-wrapper {
           display: flex;
@@ -139,7 +147,7 @@
         display: none;
         position: absolute;
         top: 100%;
-        {{#if isRtl}}left: 0;{{else}}right: 0;{{/if}}
+        ${dropdownSideRule}
         background: white;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         border-radius: 8px;
@@ -168,7 +176,7 @@
         font-weight: 600;
         color: #111827;
       }
-    </style>
+    `} />
   </head>
   <body class="bg-gray-50">
     <!-- Header with Language Switcher -->
@@ -181,17 +189,17 @@
           <div class="language-switcher">
             <button class="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg shadow-sm border border-gray-200 text-sm hover:bg-gray-50 transition-colors">
               <span>🌍</span>
-              <span class="current-language">{{languageName}}</span>
+              <span class="current-language">{languageName}</span>
               <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </button>
             <div class="language-dropdown">
-              {{#each languageOptions}}
-              <a href="{{url}}" class="{{#if current}}current-language{{/if}}">
-                {{name}}
+              {languageOptions.map((option) => (
+              <a href={option.url} class={option.current ? 'current-language' : ''}>
+                {option.name}
               </a>
-              {{/each}}
+              ))}
             </div>
           </div>
         </div>
@@ -201,29 +209,29 @@
     <section class="py-16 bg-gray-50 overflow-hidden">
       <div class="container mx-auto px-4 z-10 text-center">
         <div class="max-w-3xl mx-auto text-center">
-          <h1 class="text-2xl sm:text-3xl font-medium mb-2 text-black"><span class="inline-flex items-center"><span class="{{#if isRtl}}ml-2{{else}}mr-2{{/if}}">✦</span><span class="px-2 py-1">Logo.surf</span><span class="{{#if isRtl}}mr-2{{else}}ml-2{{/if}}">✦</span></span> <span class="text-4xl sm:text-6xl font-bold mb-4 text-gray-900 leading-[1.2] block">{{t.header.tagline}}</span></h1>
-          <p class="text-base sm:text-xl text-gray-500 mb-8">{{t.header.subtitle}}</p>
+          <h1 class="text-2xl sm:text-3xl font-medium mb-2 text-black"><span class="inline-flex items-center"><span class={startStarMargin}>✦</span><span class="px-2 py-1">Logo.surf</span><span class={endStarMargin}>✦</span></span> <span class="text-4xl sm:text-6xl font-bold mb-4 text-gray-900 leading-[1.2] block">{t.header.tagline}</span></h1>
+          <p class="text-base sm:text-xl text-gray-500 mb-8">{t.header.subtitle}</p>
           <div class="grid grid-cols-3 gap-6 mb-12 max-w-[360px] mx-auto items-start">
             <div class="flex flex-col items-center justify-center">
               <svg class="size-16 sm:size-20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                 <rect width="512" height="512" fill="#2E8B57" rx="16" ry="16"></rect>
                 <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Impact, ImpactFallback, sans-serif" font-weight="normal" fill="#FFFFFF" font-size="256.36146115395627">SHIP</text>
               </svg>
-              <p class="text-sm sm:text-base font-medium text-gray-700 mt-3">{{t.features.ship_fast}}</p>
+              <p class="text-sm sm:text-base font-medium text-gray-700 mt-3">{t.features.ship_fast}</p>
             </div>
             <div class="flex flex-col items-center justify-center">
               <svg class="size-16 sm:size-20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                 <rect width="512" height="512" fill="#FF4500" rx="16" ry="16"></rect>
                 <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Impact, ImpactFallback, sans-serif" font-weight="normal" fill="#FFFFFF" font-size="256.36146115395627">PRO</text>
               </svg>
-              <p class="text-sm sm:text-base  font-medium text-gray-700 mt-3">{{t.features.professional}}</p>
+              <p class="text-sm sm:text-base  font-medium text-gray-700 mt-3">{t.features.professional}</p>
             </div>
             <div class="flex flex-col items-center justify-center">
               <svg class="size-16 sm:size-20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                 <rect width="512" height="512" fill="#000000" rx="16" ry="16"></rect>
                 <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Impact, ImpactFallback, sans-serif" font-weight="normal" fill="#FFFFFF" font-size="256.36146115395627">FREE</text>
               </svg>
-              <p class="text-sm sm:text-base font-medium text-gray-700 mt-3">{{t.features.totally_free}}</p>
+              <p class="text-sm sm:text-base font-medium text-gray-700 mt-3">{t.features.totally_free}</p>
             </div>
           </div>
         </div>
@@ -231,38 +239,38 @@
           <!-- Logo items will be dynamically inserted here -->
         </div>
         <a href="#generate-favicon" class="mt-12 inline-flex items-center justify-center bg-gray-900 hover:bg-gray-700 text-white font-medium py-4 px-7 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-        {{t.cta.generate_now}}
+        {t.cta.generate_now}
         </a>
         <div class="mt-4 text-center">
-          <a href="https://github.com/airyland/logo.surf" target="_blank" class="text-sm text-gray-600 hover:text-gray-800">{{t.cta.view_source}}</a>
+          <a href="https://github.com/airyland/logo.surf" target="_blank" class="text-sm text-gray-600 hover:text-gray-800">{t.cta.view_source}</a>
         </div>
       </div>
     </section>
     <div class="container mx-auto px-4 py-8">
       <div>
-        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">{{t.generator.try_now}}</h2>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">{t.generator.try_now}</h2>
         <div class="flex flex-col lg:flex-row gap-6 mb-12" id="generate-favicon">
           <div class="w-full lg:w-1/2">
             <div class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
-              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">{{t.generator.settings}}</h2>
+              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">{t.generator.settings}</h2>
               <div class="mb-4">
-                <label for="text" class="block mb-2 text-gray-600">{{t.generator.text_label}}</label>
+                <label for="text" class="block mb-2 text-gray-600">{t.generator.text_label}</label>
                 <input type="text" id="text" class="w-full border rounded px-3 py-2" value="AI">
-                <p class="text-xs text-gray-600 mt-2">{{t.generator.emoji_support}} <a href="https://emojispark.com" target="_blank" class="inline-block underline">EmojiSpark.com</a>
+                <p class="text-xs text-gray-600 mt-2">{t.generator.emoji_support} <a href="https://emojispark.com" target="_blank" class="inline-block underline">EmojiSpark.com</a>
                 </p>
               </div>
               <div class="flex flex-wrap -mx-2 mb-4">
                 <div class="w-1/2 px-2">
-                  <label for="size" class="block mb-2 text-gray-600">{{t.generator.size}}</label>
+                  <label for="size" class="block mb-2 text-gray-600">{t.generator.size}</label>
                   <input type="number" id="size" class="w-full border rounded px-3 py-2" value="512" disabled>
                 </div>
                 <div class="w-1/2 px-2">
-                  <label for="radius" class="block mb-2 text-gray-600">{{t.generator.radius}}</label>
+                  <label for="radius" class="block mb-2 text-gray-600">{t.generator.radius}</label>
                   <input type="number" id="radius" class="w-full border rounded px-3 py-2" value="80">
                 </div>
               </div>
               <div class="mb-4">
-                <label for="bgColor" class="block mb-2 text-gray-600">{{t.generator.background_color}}</label>
+                <label for="bgColor" class="block mb-2 text-gray-600">{t.generator.background_color}</label>
                 <div class="color-picker-wrapper">
                   <input type="color" id="bgColorPicker" class="hidden">
                   <div id="bgColorPreview" class="color-preview"></div>
@@ -270,11 +278,11 @@
                 </div>
               </div>
               <div class="mb-4">
-                <label for="fontFamily" class="block mb-2 text-gray-600">{{t.generator.font_family}}</label>
+                <label for="fontFamily" class="block mb-2 text-gray-600">{t.generator.font_family}</label>
                 <div class="flex">
                   <input type="text" id="fontFamily" class="w-2/3 border rounded-l px-3 py-2" placeholder="Enter font name or select" value="Arial">
                   <select id="fontFamilySelect" class="w-1/3 border border-l-0 rounded-r px-3 py-2">
-                    <option value="">{{t.generator.select_font}}</option>
+                    <option value="">{t.generator.select_font}</option>
                     <option value="Arial">Arial</option>
                     <option value="Helvetica">Helvetica</option>
                     <option value="Times New Roman">Times New Roman</option>
@@ -293,15 +301,15 @@
               </div>
               <div class="gap-4 mb-4">
                 <div>
-                  <label for="fontWeight" class="block mb-2 text-gray-600">{{t.generator.font_weight}}</label>
+                  <label for="fontWeight" class="block mb-2 text-gray-600">{t.generator.font_weight}</label>
                   <select id="fontWeight" class="w-full border rounded px-3 py-2">
-                    <option value="normal">{{t.generator.normal}}</option>
-                    <option value="bold">{{t.generator.bold}}</option>
+                    <option value="normal">{t.generator.normal}</option>
+                    <option value="bold">{t.generator.bold}</option>
                   </select>
                 </div>
               </div>
               <div class="mb-6">
-                <label for="textColor" class="block mb-2 text-gray-600">{{t.generator.text_color}}</label>
+                <label for="textColor" class="block mb-2 text-gray-600">{t.generator.text_color}</label>
                 <div class="color-picker-wrapper">
                   <input type="color" id="textColorPicker" class="hidden">
                   <div id="textColorPreview" class="color-preview"></div>
@@ -309,16 +317,16 @@
                 </div>
               </div>
               <div class="mb-4">
-                <label for="verticalOffset" class="block mb-2 text-gray-600">{{t.generator.vertical_position}}</label>
+                <label for="verticalOffset" class="block mb-2 text-gray-600">{t.generator.vertical_position}</label>
                 <input type="range" id="verticalOffset" min="-30" max="30" value="0" step="1" class="w-full">
                 <span id="verticalOffsetValue" class="text-sm text-gray-500">0%</span>
               </div>
               <div class="flex flex-col sm:flex-row justify-between">
-                <button id="resetBtn" class="base-button mb-2 sm:mb-0">{{t.generator.reset_default}}</button>
-                <button id="generateBtn" class="hidden bg-theme text-white px-4 py-2 rounded hover:bg-theme-dark">{{t.generator.generate_favicons}}</button>
+                <button id="resetBtn" class="base-button mb-2 sm:mb-0">{t.generator.reset_default}</button>
+                <button id="generateBtn" class="hidden bg-theme text-white px-4 py-2 rounded hover:bg-theme-dark">{t.generator.generate_favicons}</button>
               </div>
               <div class="mt-6">
-                <h3 class="text-lg font-semibold mb-2 text-gray-700">{{t.generator.recommended_schemes}}</h3>
+                <h3 class="text-lg font-semibold mb-2 text-gray-700">{t.generator.recommended_schemes}</h3>
                 <div id="colorSchemes" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   <!-- Color schemes will be dynamically added here -->
                 </div>
@@ -327,65 +335,65 @@
           </div>
           <div class="w-full lg:w-1/2">
             <div class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
-              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">{{t.generator.preview}}</h2>
+              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">{t.generator.preview}</h2>
               <div class="w-full max-w-lg mx-auto preview-small-screen">
                 <div id="preview" class="grid-background w-full aspect-square bg-gray-100 flex items-center justify-center border border-gray-300 p-4"></div>
               </div>
               <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <button id="downloadPng" class="base-button">{{t.generator.download_png}}</button>
-                <button id="downloadSvg" class="base-button">{{t.generator.download_svg}}</button>
-                <button id="downloadZip" class="base-button">{{t.generator.download_zip}}</button>
+                <button id="downloadPng" class="base-button">{t.generator.download_png}</button>
+                <button id="downloadSvg" class="base-button">{t.generator.download_svg}</button>
+                <button id="downloadZip" class="base-button">{t.generator.download_zip}</button>
               </div>
               <p class="mt-4 text-sm text-gray-600">
-                {{t.generator.zip_contents}}
+                {t.generator.zip_contents}
               </p>
               <p class="text-sm text-gray-700 mt-2 font-medium bg-yellow-100 p-2 rounded">
-                <span class="font-semibold">Tip:</span> {{t.generator.tip_emoji}}
+                <span class="font-semibold">Tip:</span> {t.generator.tip_emoji}
               </p>
               <p class="mt-2 text-sm text-gray-600 bg-gray-100 p-2 rounded">
-                {{t.generator.png_optimization}} <a href="https://small.im" target="_blank" class="text-theme underline">https://small.im</a>
+                {t.generator.png_optimization} <a href="https://small.im" target="_blank" class="text-theme underline">https://small.im</a>
               </p>
             </div>
             <div class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mt-6">
-              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">{{t.generator.favicon_html}}</h2>
+              <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">{t.generator.favicon_html}</h2>
               <pre id="htmlCode" class="bg-gray-100 p-4 rounded overflow-x-auto text-sm"><code>&lt;link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="favicon.ico"&gt;
 &lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;
 &lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
 &lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;</code></pre>
               <p class="mt-2 text-sm text-gray-600 bg-gray-100 p-2 rounded">
-                {{t.generator.test_favicon}} <a href="https://favicon.im " target="_blank" class="text-theme underline">https://favicon.im</a>
+                {t.generator.test_favicon} <a href="https://favicon.im " target="_blank" class="text-theme underline">https://favicon.im</a>
               </p>
-              <button id="copyHtmlCode" class="mt-4 base-button">{{t.generator.copy_html}}</button>
+              <button id="copyHtmlCode" class="mt-4 base-button">{t.generator.copy_html}</button>
             </div>
           </div>
         </div>
       </div>
       <div class="mt-16" id="gallery">
-        <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-center text-gray-900">{{t.gallery.title}}</h2>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-center text-gray-900">{t.gallery.title}</h2>
         <p class="text-base text-center text-gray-500">
-          {{t.gallery.emoji_note}}
+          {t.gallery.emoji_note}
         </p>
         <p class="text-base text-center text-gray-500">
-          {{t.gallery.copyright_note}}
+          {t.gallery.copyright_note}
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 gallery-box mt-12">
           <!-- Favicon examples will be dynamically added here -->
         </div>
       </div>
       <div class="mt-16">
-        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">{{t.features_section.title}}</h2>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">{t.features_section.title}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-2 text-gray-700">{{t.features_section.multiple_formats}}</h3>
-            <p class="text-gray-600">{{t.features_section.multiple_formats_desc}}</p>
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">{t.features_section.multiple_formats}</h3>
+            <p class="text-gray-600">{t.features_section.multiple_formats_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-2 text-gray-700">{{t.features_section.customization}}</h3>
-            <p class="text-gray-600">{{t.features_section.customization_desc}}</p>
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">{t.features_section.customization}</h3>
+            <p class="text-gray-600">{t.features_section.customization_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-2 text-gray-700">{{t.features_section.instant_preview}}</h3>
-            <p class="text-gray-600">{{t.features_section.instant_preview_desc}}</p>
+            <h3 class="text-xl font-semibold mb-2 text-gray-700">{t.features_section.instant_preview}</h3>
+            <p class="text-gray-600">{t.features_section.instant_preview_desc}</p>
           </div>
         </div>
       </div>
@@ -393,33 +401,33 @@
       <!-- Use Cases Section -->
       <div class="mt-20">
         <div class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900">{{t.use_cases.title}}</h2>
-          <p class="text-lg text-gray-600 max-w-3xl mx-auto">{{t.use_cases.subtitle}}</p>
+          <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900">{t.use_cases.title}</h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">{t.use_cases.subtitle}</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.use_cases.startup}}</h3>
-            <p class="text-gray-600">{{t.use_cases.startup_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.use_cases.startup}</h3>
+            <p class="text-gray-600">{t.use_cases.startup_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.use_cases.developers}}</h3>
-            <p class="text-gray-600">{{t.use_cases.developers_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.use_cases.developers}</h3>
+            <p class="text-gray-600">{t.use_cases.developers_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.use_cases.small_business}}</h3>
-            <p class="text-gray-600">{{t.use_cases.small_business_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.use_cases.small_business}</h3>
+            <p class="text-gray-600">{t.use_cases.small_business_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.use_cases.content_creators}}</h3>
-            <p class="text-gray-600">{{t.use_cases.content_creators_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.use_cases.content_creators}</h3>
+            <p class="text-gray-600">{t.use_cases.content_creators_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.use_cases.agencies}}</h3>
-            <p class="text-gray-600">{{t.use_cases.agencies_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.use_cases.agencies}</h3>
+            <p class="text-gray-600">{t.use_cases.agencies_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.use_cases.educators}}</h3>
-            <p class="text-gray-600">{{t.use_cases.educators_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.use_cases.educators}</h3>
+            <p class="text-gray-600">{t.use_cases.educators_desc}</p>
           </div>
         </div>
       </div>
@@ -427,30 +435,30 @@
       <!-- How It Works Section -->
       <div class="mt-20">
         <div class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900">{{t.how_it_works.title}}</h2>
-          <p class="text-lg text-gray-600 max-w-3xl mx-auto">{{t.how_it_works.subtitle}}</p>
+          <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900">{t.how_it_works.title}</h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">{t.how_it_works.subtitle}</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="text-center">
             <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <span class="text-2xl font-bold text-blue-600">1</span>
             </div>
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.how_it_works.step1}}</h3>
-            <p class="text-gray-600">{{t.how_it_works.step1_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.how_it_works.step1}</h3>
+            <p class="text-gray-600">{t.how_it_works.step1_desc}</p>
           </div>
           <div class="text-center">
             <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <span class="text-2xl font-bold text-green-600">2</span>
             </div>
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.how_it_works.step2}}</h3>
-            <p class="text-gray-600">{{t.how_it_works.step2_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.how_it_works.step2}</h3>
+            <p class="text-gray-600">{t.how_it_works.step2_desc}</p>
           </div>
           <div class="text-center">
             <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <span class="text-2xl font-bold text-purple-600">3</span>
             </div>
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.how_it_works.step3}}</h3>
-            <p class="text-gray-600">{{t.how_it_works.step3_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.how_it_works.step3}</h3>
+            <p class="text-gray-600">{t.how_it_works.step3_desc}</p>
           </div>
         </div>
       </div>
@@ -458,114 +466,114 @@
       <!-- Benefits Section -->
       <div class="mt-20">
         <div class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900">{{t.benefits.title}}</h2>
+          <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900">{t.benefits.title}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.benefits.no_signup}}</h3>
-            <p class="text-gray-600">{{t.benefits.no_signup_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.benefits.no_signup}</h3>
+            <p class="text-gray-600">{t.benefits.no_signup_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.benefits.unlimited_use}}</h3>
-            <p class="text-gray-600">{{t.benefits.unlimited_use_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.benefits.unlimited_use}</h3>
+            <p class="text-gray-600">{t.benefits.unlimited_use_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.benefits.commercial_use}}</h3>
-            <p class="text-gray-600">{{t.benefits.commercial_use_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.benefits.commercial_use}</h3>
+            <p class="text-gray-600">{t.benefits.commercial_use_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.benefits.instant_results}}</h3>
-            <p class="text-gray-600">{{t.benefits.instant_results_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.benefits.instant_results}</h3>
+            <p class="text-gray-600">{t.benefits.instant_results_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.benefits.all_formats}}</h3>
-            <p class="text-gray-600">{{t.benefits.all_formats_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.benefits.all_formats}</h3>
+            <p class="text-gray-600">{t.benefits.all_formats_desc}</p>
           </div>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-xl font-semibold mb-3 text-gray-700">{{t.benefits.web_based}}</h3>
-            <p class="text-gray-600">{{t.benefits.web_based_desc}}</p>
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">{t.benefits.web_based}</h3>
+            <p class="text-gray-600">{t.benefits.web_based_desc}</p>
           </div>
         </div>
       </div>
 
       <div class="mt-16">
-        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">{{t.faq.title}}</h2>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-6 text-center text-gray-900">{t.faq.title}</h2>
         <div class="space-y-4" id="faq-accordion">
           <div class="bg-white rounded-lg border border-gray-200">
             <button class="flex justify-between items-center w-full p-6 text-left">
-              <h3 class="text-xl font-semibold text-gray-700">{{t.faq.what_is_logosurf}}</h3>
+              <h3 class="text-xl font-semibold text-gray-700">{t.faq.what_is_logosurf}</h3>
               <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="p-6 pt-0 hidden">
               <p class="text-gray-600">
-                {{{t.faq.what_is_logosurf_answer}}}
+                <Fragment set:html={t.faq.what_is_logosurf_answer} />
               </p>
             </div>
           </div>
 
           <div class="bg-white rounded-lg border border-gray-200">
             <button class="flex justify-between items-center w-full p-6 text-left">
-              <h3 class="text-xl font-semibold text-gray-700">{{t.faq.ai_question}}</h3>
+              <h3 class="text-xl font-semibold text-gray-700">{t.faq.ai_question}</h3>
               <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="p-6 pt-0 hidden">
               <p class="text-gray-600">
-                {{t.faq.ai_answer}}
+                {t.faq.ai_answer}
               </p>
             </div>
           </div>
       
           <div class="bg-white rounded-lg border border-gray-200">
             <button class="flex justify-between items-center w-full p-6 text-left">
-              <h3 class="text-xl font-semibold text-gray-700">{{t.faq.what_is_favicon}}</h3>
+              <h3 class="text-xl font-semibold text-gray-700">{t.faq.what_is_favicon}</h3>
               <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="p-6 pt-0 hidden">
-              <p class="text-gray-600">{{t.faq.what_is_favicon_answer}}</p>
+              <p class="text-gray-600">{t.faq.what_is_favicon_answer}</p>
             </div>
           </div>
       
           <div class="bg-white rounded-lg border border-gray-200">
             <button class="flex justify-between items-center w-full p-6 text-left">
-              <h3 class="text-xl font-semibold text-gray-700">{{t.faq.font_copyright}}</h3>
+              <h3 class="text-xl font-semibold text-gray-700">{t.faq.font_copyright}</h3>
               <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="p-6 pt-0 hidden">
               <div class="text-gray-600">
-                {{{t.faq.font_copyright_answer}}}
+                <Fragment set:html={t.faq.font_copyright_answer} />
               </div>
             </div>
           </div>
       
           <div class="bg-white rounded-lg border border-gray-200">
             <button class="flex justify-between items-center w-full p-6 text-left">
-              <h3 class="text-xl font-semibold text-gray-700">{{t.faq.supported_characters}}</h3>
+              <h3 class="text-xl font-semibold text-gray-700">{t.faq.supported_characters}</h3>
               <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="p-6 pt-0 hidden">
               <div class="text-gray-600">
-                {{{t.faq.supported_characters_answer}}}
+                <Fragment set:html={t.faq.supported_characters_answer} />
               </div>
             </div>
           </div>
       
           <div class="bg-white rounded-lg border border-gray-200">
             <button class="flex justify-between items-center w-full p-6 text-left">
-              <h3 class="text-xl font-semibold text-gray-700">{{t.faq.why_different_sizes}}</h3>
+              <h3 class="text-xl font-semibold text-gray-700">{t.faq.why_different_sizes}</h3>
               <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="p-6 pt-0 hidden">
-              <p class="text-gray-600">{{t.faq.why_different_sizes_answer}}</p>
+              <p class="text-gray-600">{t.faq.why_different_sizes_answer}</p>
             </div>
           </div>
       
           <div class="bg-white rounded-lg border border-gray-200">
             <button class="flex justify-between items-center w-full p-6 text-left">
-              <h3 class="text-xl font-semibold text-gray-700">{{t.faq.how_to_add}}</h3>
+              <h3 class="text-xl font-semibold text-gray-700">{t.faq.how_to_add}</h3>
               <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="p-6 pt-0 hidden">
-              <p class="text-gray-600">{{t.faq.how_to_add_answer}}</p>
+              <p class="text-gray-600">{t.faq.how_to_add_answer}</p>
             </div>
           </div>
         </div>
@@ -574,17 +582,17 @@
     <!-- Language Footer Section -->
     <section class="py-12 bg-white border-t border-gray-200">
       <div class="container mx-auto px-4">
-        <h3 class="text-2xl font-semibold mb-6 text-center text-gray-900">{{t.footer.available_languages_title}}</h3>
+        <h3 class="text-2xl font-semibold mb-6 text-center text-gray-900">{t.footer.available_languages_title}</h3>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
-          {{#each languageOptions}}
-          <a href="{{url}}" class="flex items-center space-x-2 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors {{#if current}}bg-blue-50 border-blue-200{{/if}}">
-            <span class="text-lg">{{flag}}</span>
-            <span class="text-sm font-medium text-gray-700">{{name}}</span>
+          {languageOptions.map((option) => (
+          <a href={option.url} class={`flex items-center space-x-2 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors ${option.current ? 'bg-blue-50 border-blue-200' : ''}`}>
+            <span class="text-lg">{option.flag}</span>
+            <span class="text-sm font-medium text-gray-700">{option.name}</span>
           </a>
-          {{/each}}
+          ))}
         </div>
         <p class="text-center text-sm text-gray-600">
-          {{t.footer.language_note}}
+          {t.footer.language_note}
         </p>
       </div>
     </section>
@@ -593,10 +601,10 @@
       <div class="container mx-auto px-4">
         <div class="flex justify-center mb-6">
           <a href="https://twitter.com/we_webmaster" target="_blank" rel="noreferrer" class="inline-flex items-center px-6 py-3 bg-white text-theme rounded-full hover:bg-gray-100 transition-colors duration-200 text-lg font-semibold shadow-md hover:shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{#if isRtl}}ml-2{{else}}mr-2{{/if}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={footerIconMargin}>
               <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
             </svg>
-            {{t.footer.follow_us}}
+            {t.footer.follow_us}
           </a>
         </div>
         <div class="flex flex-wrap justify-center mb-4">
@@ -613,10 +621,10 @@
           <a href="https://www.redirectcheck.org" aria-label="RedirectCheck Link" target="_blank" class="text-white mx-2 my-1 hover:underline">RedirectCheck</a>
         </div>
         <p class="text-center text-xs text-white opacity-75">
-          {{t.footer.disclaimer}}
+          {t.footer.disclaimer}
         </p>
         <p class="text-center text-xs text-white opacity-75 mt-2">
-          {{t.footer.privacy_note}}
+          {t.footer.privacy_note}
         </p>
         <div class="flex flex-col justify-center items-center mt-4">
           <a href="https://github.com/airyland/logo.surf" target="_blank" class="text-white hover:text-gray-300 transition-colors duration-200">
@@ -625,13 +633,13 @@
             </svg>
           </a>
           <p class="text-center text-xs text-white opacity-40 mt-2">
-            {{t.footer.license_note}}
+            {t.footer.license_note}
           </p>
         </div>
       </div>
     </footer>
-    <script src="/app.js?v=1"></script>
-    <style>@font-face {
+    <script is:inline src="/app.js?v=1"></script>
+    <style is:inline>@font-face {
       font-family: 'ImpactFallback';
       src: url('./assets/impact.ttf') format('truetype');
       font-weight: normal;

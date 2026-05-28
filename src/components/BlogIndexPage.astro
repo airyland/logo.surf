@@ -1,38 +1,45 @@
+---
+import { formatDate } from '../lib/site.mjs';
+
+const { lang, isRtl, currentLanguageName, t, posts, canonicalUrl, alternateUrls, languages } = Astro.props;
+const bodyDirectionRule = isRtl ? 'direction: rtl;' : '';
+const dropdownSideRule = isRtl ? 'left: 0;' : 'right: 0;';
+---
 <!DOCTYPE html>
-<html lang="{{lang}}" {{#if isRtl}}dir="rtl"{{/if}}>
+<html lang={lang} dir={isRtl ? 'rtl' : undefined}>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{t.blog.title}} - {{t.meta.title}}</title>
-    <meta name="description" content="{{t.blog.description}}">
+    <title>{t.blog.title} - {t.meta.title}</title>
+    <meta name="description" content={t.blog.description}>
     <meta name="keywords" content="logo design blog, favicon tutorials, branding tips, logo generator guide">
     
     <!-- SEO and Language Tags -->
-    <link rel="canonical" href="{{canonicalUrl}}/blog">
-    {{#each alternateUrls}}
-    <link rel="alternate" hreflang="{{@key}}" href="{{this}}/blog">
-    {{/each}}
+    <link rel="canonical" href={`${canonicalUrl}/blog`}>
+    {Object.entries(alternateUrls).map(([key, href]) => (
+    <link rel="alternate" hreflang={key} href={`${href}/blog`}>
+    ))}
     
     <!-- Open Graph -->
-    <meta property="og:title" content="{{t.blog.title}} - {{t.meta.title}}">
-    <meta property="og:description" content="{{t.blog.description}}">
+    <meta property="og:title" content={`${t.blog.title} - ${t.meta.title}`}>
+    <meta property="og:description" content={t.blog.description}>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{canonicalUrl}}/blog">
+    <meta property="og:url" content={`${canonicalUrl}/blog`}>
     <meta property="og:image" content="https://www.logo.surf/favicon-512x512.png">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{t.blog.title}} - {{t.meta.title}}">
-    <meta name="twitter:description" content="{{t.blog.description}}">
+    <meta name="twitter:title" content={`${t.blog.title} - ${t.meta.title}`}>
+    <meta name="twitter:description" content={t.blog.description}>
     <meta name="twitter:image" content="https://www.logo.surf/favicon-512x512.png">
     <meta name="twitter:creator" content="@we_webmaster">
     
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="2048x2048" href="/favicon-2048x2048.png">
-    <script defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
-    <script>
+    <script is:inline defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
+    <script is:inline>
       tailwind.config = {
           theme: {
               extend: {
@@ -44,10 +51,10 @@
           }
       }
     </script>
-    <style>
+    <style is:inline set:html={`
       body {
           font-family: 'Poppins', sans-serif;
-          {{#if isRtl}}direction: rtl;{{/if}}
+          ${bodyDirectionRule}
       }
       .base-button {
           background: #111827;
@@ -67,7 +74,7 @@
           display: none;
           position: absolute;
           top: 100%;
-          {{#if isRtl}}left: 0;{{else}}right: 0;{{/if}}
+          ${dropdownSideRule}
           background: white;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
@@ -95,7 +102,7 @@
           transform: translateY(-2px);
           box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       }
-    </style>
+    `} />
   </head>
   <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
@@ -104,21 +111,21 @@
         <div class="flex items-center space-x-4">
           <a href="/" class="text-2xl font-bold text-theme">Logo.Surf</a>
           <nav class="hidden md:flex space-x-6">
-            <a href="/" class="text-gray-600 hover:text-theme transition-colors">{{#if t.nav.home}}{{t.nav.home}}{{else}}Home{{/if}}</a>
-            <a href="/blog" class="text-theme font-medium">{{#if t.nav.blog}}{{t.nav.blog}}{{else}}Blog{{/if}}</a>
+            <a href="/" class="text-gray-600 hover:text-theme transition-colors">{t.nav.home || 'Home'}</a>
+            <a href="/blog" class="text-theme font-medium">{t.nav.blog || 'Blog'}</a>
           </nav>
         </div>
         <div class="language-switcher">
           <button id="languageToggle" class="flex items-center space-x-2 px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-            <span>{{currentLanguageName}}</span>
+            <span>{currentLanguageName}</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div id="languageDropdown" class="language-dropdown">
-            {{#each languages}}
-            <a href="/{{@key}}/blog" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{name}}</a>
-            {{/each}}
+            {languages.map((language, index) => (
+            <a href={`/${index}/blog`} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{language.name}</a>
+            ))}
           </div>
         </div>
       </div>
@@ -128,52 +135,52 @@
     <main class="max-w-6xl mx-auto px-4 py-8">
       <!-- Blog Header -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{t.blog.title}}</h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">{{t.blog.description}}</p>
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">{t.blog.title}</h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">{t.blog.description}</p>
       </div>
 
       <!-- Blog Posts Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {{#each posts}}
+        {posts.map((post) => (
         <article class="blog-card bg-white rounded-lg shadow-sm overflow-hidden">
           <div class="p-6">
             <div class="flex items-center text-sm text-gray-500 mb-3">
-              <time datetime="{{date}}">{{formatDate date}}</time>
+              <time datetime={post.date}>{formatDate(post.date)}</time>
               <span class="mx-2">•</span>
-              <span>{{readTime}}</span>
+              <span>{post.readTime}</span>
             </div>
             
             <h2 class="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
-              <a href="/blog/{{slug}}" class="hover:text-theme transition-colors">{{title}}</a>
+              <a href={`/blog/${post.slug}`} class="hover:text-theme transition-colors">{post.title}</a>
             </h2>
             
-            <p class="text-gray-600 mb-4 line-clamp-3">{{excerpt}}</p>
+            <p class="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
             
-            {{#if tags}}
+            {post.tags && (
             <div class="flex flex-wrap gap-2 mb-4">
-              {{#each tags}}
-              <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">{{this}}</span>
-              {{/each}}
+              {post.tags.map((tag) => (
+              <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">{tag}</span>
+              ))}
             </div>
-            {{/if}}
+            )}
             
-            <a href="/blog/{{slug}}" class="inline-flex items-center text-theme hover:text-theme-dark transition-colors">
-              {{../t.blog.readMore}}
+            <a href={`/blog/${post.slug}`} class="inline-flex items-center text-theme hover:text-theme-dark transition-colors">
+              {t.blog.readMore}
               <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
               </svg>
             </a>
           </div>
         </article>
-        {{/each}}
+        ))}
       </div>
 
-      {{#unless posts}}
+      {posts.length === 0 && (
       <div class="text-center py-12">
-        <h3 class="text-xl font-medium text-gray-900 mb-2">{{#if t.blog.noPosts}}{{t.blog.noPosts}}{{else}}No blog posts yet{{/if}}</h3>
-        <p class="text-gray-600">{{#if t.blog.noPostsDesc}}{{t.blog.noPostsDesc}}{{else}}Check back soon for helpful articles about logo design and branding.{{/if}}</p>
+        <h3 class="text-xl font-medium text-gray-900 mb-2">{t.blog.noPosts || 'No blog posts yet'}</h3>
+        <p class="text-gray-600">{t.blog.noPostsDesc || 'Check back soon for helpful articles about logo design and branding.'}</p>
       </div>
-      {{/unless}}
+      )}
     </main>
 
     <!-- Footer -->
@@ -185,7 +192,7 @@
       </div>
     </footer>
 
-    <script>
+    <script is:inline>
       // Language switcher functionality
       document.getElementById('languageToggle').addEventListener('click', function() {
         const dropdown = document.getElementById('languageDropdown');

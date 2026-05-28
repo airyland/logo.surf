@@ -1,95 +1,98 @@
+---
+import { formatDate, substring } from '../lib/site.mjs';
+
+const { lang, isRtl, currentLanguageName, t, post, canonicalUrl, alternateUrls, languages } = Astro.props;
+const bodyDirectionRule = isRtl ? 'direction: rtl;' : '';
+const dropdownSideRule = isRtl ? 'left: 0;' : 'right: 0;';
+const postImage = post.image ? `${canonicalUrl}${post.image}` : 'https://www.logo.surf/favicon-512x512.png';
+const dateModified = `${post.lastUpdated || post.date}T00:00:00Z`;
+const blogPostStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.description,
+  author: {
+    '@type': 'Person',
+    name: post.author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Logo.Surf',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.logo.surf/favicon-512x512.png',
+    },
+  },
+  datePublished: `${post.date}T00:00:00Z`,
+  dateModified,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    "@id": `${canonicalUrl}/blog/${post.slug}`,
+  },
+  image: postImage,
+  keywords: post.keywords,
+};
+const faqStructuredData = post.faq ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: post.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+} : null;
+---
 <!DOCTYPE html>
-<html lang="{{lang}}" {{#if isRtl}}dir="rtl"{{/if}}>
+<html lang={lang} dir={isRtl ? 'rtl' : undefined}>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{post.title}} - {{t.meta.title}}</title>
-    <meta name="description" content="{{post.description}}">
-    <meta name="keywords" content="{{post.keywords}}">
-    <meta name="author" content="{{post.author}}">
+    <title>{post.title} - {t.meta.title}</title>
+    <meta name="description" content={post.description}>
+    <meta name="keywords" content={post.keywords}>
+    <meta name="author" content={post.author}>
     
     <!-- SEO and Language Tags -->
-    <link rel="canonical" href="{{canonicalUrl}}/blog/{{post.slug}}">
-    {{#each alternateUrls}}
-    <link rel="alternate" hreflang="{{@key}}" href="{{this}}/blog/{{../post.slug}}">
-    {{/each}}
+    <link rel="canonical" href={`${canonicalUrl}/blog/${post.slug}`}>
+    {Object.entries(alternateUrls).map(([key, href]) => (
+    <link rel="alternate" hreflang={key} href={`${href}/blog/${post.slug}`}>
+    ))}
     
     <!-- Open Graph -->
-    <meta property="og:title" content="{{post.title}}">
-    <meta property="og:description" content="{{post.description}}">
+    <meta property="og:title" content={post.title}>
+    <meta property="og:description" content={post.description}>
     <meta property="og:type" content="article">
-    <meta property="og:url" content="{{canonicalUrl}}/blog/{{post.slug}}">
-    <meta property="og:image" content="{{#if post.image}}{{canonicalUrl}}{{post.image}}{{else}}https://www.logo.surf/favicon-512x512.png{{/if}}">
-    <meta property="article:author" content="{{post.author}}">
-    <meta property="article:published_time" content="{{post.date}}T00:00:00Z">
-    {{#each post.tags}}
-    <meta property="article:tag" content="{{this}}">
-    {{/each}}
+    <meta property="og:url" content={`${canonicalUrl}/blog/${post.slug}`}>
+    <meta property="og:image" content={postImage}>
+    <meta property="article:author" content={post.author}>
+    <meta property="article:published_time" content={`${post.date}T00:00:00Z`}>
+    {post.tags.map((tag) => (
+    <meta property="article:tag" content={tag}>
+    ))}
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{post.title}}">
-    <meta name="twitter:description" content="{{post.description}}">
-    <meta name="twitter:image" content="{{#if post.image}}{{canonicalUrl}}{{post.image}}{{else}}https://www.logo.surf/favicon-512x512.png{{/if}}">
+    <meta name="twitter:title" content={post.title}>
+    <meta name="twitter:description" content={post.description}>
+    <meta name="twitter:image" content={postImage}>
     <meta name="twitter:creator" content="@we_webmaster">
     
     <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": "{{post.title}}",
-      "description": "{{post.description}}",
-      "author": {
-        "@type": "Person",
-        "name": "{{post.author}}"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Logo.Surf",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.logo.surf/favicon-512x512.png"
-        }
-      },
-      "datePublished": "{{post.date}}T00:00:00Z",
-      "dateModified": "{{#if post.lastUpdated}}{{post.lastUpdated}}{{else}}{{post.date}}{{/if}}T00:00:00Z",
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "{{canonicalUrl}}/blog/{{post.slug}}"
-      },
-      "image": "{{#if post.image}}{{canonicalUrl}}{{post.image}}{{else}}https://www.logo.surf/favicon-512x512.png{{/if}}",
-      "keywords": "{{post.keywords}}"
-    }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(blogPostStructuredData, null, 6)} />
 
-    {{#if post.faq}}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {{#each post.faq}}
-        {
-          "@type": "Question",
-          "name": "{{this.question}}",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "{{this.answer}}"
-          }
-        }{{#unless @last}},{{/unless}}
-        {{/each}}
-      ]
-    }
-    </script>
-    {{/if}}
+    {faqStructuredData && (
+    <script type="application/ld+json" set:html={JSON.stringify(faqStructuredData, null, 6)} />
+    )}
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="2048x2048" href="/favicon-2048x2048.png">
-    <script defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
-    <script>
+    <script is:inline defer data-domain="logo.surf" src="https://click.pageview.click/js/script.js"></script>
+    <script is:inline>
       tailwind.config = {
           theme: {
               extend: {
@@ -101,10 +104,10 @@
           }
       }
     </script>
-    <style>
+    <style is:inline set:html={`
       body {
           font-family: 'Poppins', sans-serif;
-          {{#if isRtl}}direction: rtl;{{/if}}
+          ${bodyDirectionRule}
       }
       .base-button {
           background: #111827;
@@ -124,7 +127,7 @@
           display: none;
           position: absolute;
           top: 100%;
-          {{#if isRtl}}left: 0;{{else}}right: 0;{{/if}}
+          ${dropdownSideRule}
           background: white;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
@@ -266,7 +269,7 @@
         font-weight: 600;
         flex-shrink: 0;
       }
-    </style>
+    `} />
   </head>
   <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
@@ -275,21 +278,21 @@
         <div class="flex items-center space-x-4">
           <a href="/" class="text-2xl font-bold text-theme">Logo.Surf</a>
           <nav class="hidden md:flex space-x-6">
-            <a href="/" class="text-gray-600 hover:text-theme transition-colors">{{#if t.nav.home}}{{t.nav.home}}{{else}}Home{{/if}}</a>
-            <a href="/blog" class="text-gray-600 hover:text-theme transition-colors">{{#if t.nav.blog}}{{t.nav.blog}}{{else}}Blog{{/if}}</a>
+            <a href="/" class="text-gray-600 hover:text-theme transition-colors">{t.nav.home || 'Home'}</a>
+            <a href="/blog" class="text-gray-600 hover:text-theme transition-colors">{t.nav.blog || 'Blog'}</a>
           </nav>
         </div>
         <div class="language-switcher">
           <button id="languageToggle" class="flex items-center space-x-2 px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-            <span>{{currentLanguageName}}</span>
+            <span>{currentLanguageName}</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div id="languageDropdown" class="language-dropdown">
-            {{#each languages}}
-            <a href="/{{@key}}/blog/{{../post.slug}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{name}}</a>
-            {{/each}}
+            {languages.map((language, index) => (
+            <a href={`/${index}/blog/${post.slug}`} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{language.name}</a>
+            ))}
           </div>
         </div>
       </div>
@@ -298,11 +301,11 @@
     <!-- Breadcrumb -->
     <nav class="max-w-4xl mx-auto px-4 py-4">
       <ol class="flex items-center space-x-2 text-sm text-gray-500">
-        <li><a href="/" class="hover:text-theme">{{#if t.nav.home}}{{t.nav.home}}{{else}}Home{{/if}}</a></li>
+        <li><a href="/" class="hover:text-theme">{t.nav.home || 'Home'}</a></li>
         <li><span class="mx-2">/</span></li>
-        <li><a href="/blog" class="hover:text-theme">{{#if t.nav.blog}}{{t.nav.blog}}{{else}}Blog{{/if}}</a></li>
+        <li><a href="/blog" class="hover:text-theme">{t.nav.blog || 'Blog'}</a></li>
         <li><span class="mx-2">/</span></li>
-        <li class="text-gray-900">{{post.title}}</li>
+        <li class="text-gray-900">{post.title}</li>
       </ol>
     </nav>
 
@@ -311,56 +314,56 @@
       <article class="bg-white rounded-lg shadow-sm p-8">
         <!-- Article Header -->
         <header class="mb-8 pb-6 border-b border-gray-200">
-          <h1 class="text-4xl font-bold text-gray-900 mb-4 leading-tight">{{post.title}}</h1>
+          <h1 class="text-4xl font-bold text-gray-900 mb-4 leading-tight">{post.title}</h1>
           
           <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4 mb-4">
             <div class="flex items-center">
-              <span class="font-medium text-gray-700">{{#if t.blog.author}}{{t.blog.author}}{{else}}By{{/if}} {{post.author}}</span>
+              <span class="font-medium text-gray-700">{t.blog.author || 'By'} {post.author}</span>
             </div>
-            <time datetime="{{post.date}}">{{formatDate post.date}}</time>
-            <span>{{post.readTime}}</span>
+            <time datetime={post.date}>{formatDate(post.date)}</time>
+            <span>{post.readTime}</span>
           </div>
           
-          {{#if post.tags}}
+          {post.tags && (
           <div class="flex flex-wrap gap-2">
-            {{#each post.tags}}
-            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">{{this}}</span>
-            {{/each}}
+            {post.tags.map((tag) => (
+            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">{tag}</span>
+            ))}
           </div>
-          {{/if}}
+          )}
         </header>
 
         <!-- Article Content -->
         <div class="prose max-w-none">
-          {{{post.content}}}
+          <Fragment set:html={post.content} />
         </div>
 
         <!-- Author Bio -->
-        {{#if post.authorBio}}
+        {post.authorBio && (
         <div class="author-bio">
-          <div class="author-bio-avatar">{{substring post.author 0 1}}</div>
+          <div class="author-bio-avatar">{substring(post.author, 0, 1)}</div>
           <div>
-            <div class="font-medium text-gray-900">{{post.author}}</div>
-            <p class="text-sm text-gray-600 mt-1">{{post.authorBio}}</p>
+            <div class="font-medium text-gray-900">{post.author}</div>
+            <p class="text-sm text-gray-600 mt-1">{post.authorBio}</p>
           </div>
         </div>
-        {{/if}}
+        )}
 
         <!-- Article Footer -->
         <footer class="mt-12 pt-8 border-t border-gray-200">
           <div class="flex items-center justify-between">
             <div class="text-sm text-gray-500">
-              {{#if t.blog.publishedOn}}{{t.blog.publishedOn}}{{else}}Published on{{/if}} <time datetime="{{post.date}}">{{formatDate post.date}}</time>
-              {{#if post.lastUpdated}}
-              <span class="mx-1">·</span> Updated <time datetime="{{post.lastUpdated}}">{{formatDate post.lastUpdated}}</time>
-              {{/if}}
+              {t.blog.publishedOn || 'Published on'} <time datetime={post.date}>{formatDate(post.date)}</time>
+              {post.lastUpdated && (
+              <span><span class="mx-1">·</span> Updated <time datetime={post.lastUpdated}>{formatDate(post.lastUpdated)}</time></span>
+              )}
             </div>
             <div class="flex space-x-4">
               <button onclick="window.history.back()" class="text-theme hover:text-theme-dark transition-colors">
-                ← {{#if t.blog.back}}{{t.blog.back}}{{else}}Back{{/if}}
+                ← {t.blog.back || 'Back'}
               </button>
               <a href="/blog" class="text-theme hover:text-theme-dark transition-colors">
-                {{#if t.blog.allPosts}}{{t.blog.allPosts}}{{else}}All Posts{{/if}}
+                {t.blog.allPosts || 'All Posts'}
               </a>
             </div>
           </div>
@@ -373,7 +376,7 @@
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
-          {{#if t.blog.backToBlog}}{{t.blog.backToBlog}}{{else}}Back to Blog{{/if}}
+          {t.blog.backToBlog || 'Back to Blog'}
         </a>
       </div>
     </main>
@@ -387,7 +390,7 @@
       </div>
     </footer>
 
-    <script>
+    <script is:inline>
       // Language switcher functionality
       document.getElementById('languageToggle').addEventListener('click', function() {
         const dropdown = document.getElementById('languageDropdown');

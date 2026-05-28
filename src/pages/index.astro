@@ -1,7 +1,8 @@
 ---
-import { renderHomePage } from '../lib/site.mjs';
+import HomePage from '../components/HomePage.astro';
+import { getHomeContext } from '../lib/site.mjs';
 
-const html = renderHomePage('en');
+const pageProps = getHomeContext('en');
 ---
 
-<Fragment set:html={html} />
+<HomePage {...pageProps} />

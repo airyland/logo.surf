@@ -1,16 +1,23 @@
 ---
-import { getHtmlPages, routeParamFromPathname } from '../lib/site.mjs';
+import BlogIndexPage from '../components/BlogIndexPage.astro';
+import BlogPostPage from '../components/BlogPostPage.astro';
+import GradientFaviconPage from '../components/GradientFaviconPage.astro';
+import HomePage from '../components/HomePage.astro';
+import { getPageEntries, routeParamFromPathname } from '../lib/site.mjs';
 
 export function getStaticPaths() {
-  return getHtmlPages()
+  return getPageEntries()
     .filter((page) => page.pathname !== '/')
     .map((page) => ({
       params: { slug: routeParamFromPathname(page.pathname) },
-      props: { html: page.html },
+      props: { kind: page.kind, pageProps: page.props },
     }));
 }
 
-const { html } = Astro.props;
+const { kind, pageProps } = Astro.props;
 ---
 
-<Fragment set:html={html} />
+{kind === 'home' && <HomePage {...pageProps} />}
+{kind === 'blog-index' && <BlogIndexPage {...pageProps} />}
+{kind === 'blog-post' && <BlogPostPage {...pageProps} />}
+{kind === 'gradient-favicon' && <GradientFaviconPage {...pageProps} />}

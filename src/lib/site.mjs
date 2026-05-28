@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import Handlebars from 'handlebars';
 import matter from 'gray-matter';
 import MarkdownIt from 'markdown-it';
 
@@ -36,20 +35,12 @@ export const config = {
   translationsDir: 'translations',
 };
 
-Handlebars.registerHelper('eq', function eq(a, b, options) {
-  return a === b ? options.fn(this) : options.inverse(this);
-});
-
-Handlebars.registerHelper('json', function json(context) {
-  return JSON.stringify(context);
-});
-
-Handlebars.registerHelper('substring', function substring(str, start, length) {
+export function substring(str, start, length) {
   if (!str) return '';
   return str.substring(start, length);
-});
+}
 
-Handlebars.registerHelper('formatDate', function formatDate(dateString) {
+export function formatDate(dateString) {
   if (!dateString) return '';
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -57,7 +48,7 @@ Handlebars.registerHelper('formatDate', function formatDate(dateString) {
     month: 'long',
     day: 'numeric',
   });
-});
+}
 
 function projectPath(...segments) {
   return path.join(rootDir, ...segments);
@@ -73,6 +64,25 @@ function readJson(relativePath) {
 
 function fileExists(relativePath) {
   return fs.existsSync(projectPath(relativePath));
+}
+
+function createBlankShape(value) {
+  if (Array.isArray(value)) return [];
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, createBlankShape(child)]));
+  }
+  return '';
+}
+
+function mergeMissingText(shape, value) {
+  if (Array.isArray(value)) return value;
+  if (shape && typeof shape === 'object' && !Array.isArray(shape)) {
+    const source = value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+    return Object.fromEntries(
+      Object.entries(shape).map(([key, childShape]) => [key, mergeMissingText(childShape, source[key])])
+    );
+  }
+  return value ?? shape;
 }
 
 function urlLanguageCode(lang) {
@@ -127,7 +137,11 @@ function loadTranslations() {
       translations[lang] = JSON.parse(content);
     }
   }
-  return translations;
+
+  const blankShape = createBlankShape(translations.en || {});
+  return Object.fromEntries(
+    Object.entries(translations).map(([lang, translation]) => [lang, mergeMissingText(blankShape, translation)])
+  );
 }
 
 function loadGradientFaviconTranslations(languages) {
@@ -140,11 +154,6 @@ function loadGradientFaviconTranslations(languages) {
     }
   }
   return translations;
-}
-
-function renderTemplate(relativePath, context) {
-  const template = Handlebars.compile(readText(relativePath));
-  return template(context);
 }
 
 function generateSlug(filename) {
@@ -228,10 +237,9 @@ export function buildBlogPosts() {
   };
 }
 
-export function renderHomePage(lang) {
-  const translations = loadTranslations();
+export function getHomeContext(lang, translations = loadTranslations()) {
   const langInfo = config.supportedLanguages[lang];
-  return renderTemplate('index.hbs', {
+  return {
     lang,
     isRtl: langInfo.dir === 'rtl',
     languageName: langInfo.name,
@@ -239,64 +247,87 @@ export function renderHomePage(lang) {
     canonicalUrl: getLanguageUrl(lang),
     alternateUrls: generateAlternateUrls(),
     languageOptions: generateLanguageOptions(lang),
-  });
+  };
 }
 
 function getHomePages(translations) {
   return Object.entries(config.supportedLanguages)
     .filter(([lang]) => translations[lang])
-    .map(([lang, langInfo]) => ({
+    .map(([lang]) => ({
       pathname: localizedPath(lang),
-      html: renderTemplate('index.hbs', {
-        lang,
-        isRtl: langInfo.dir === 'rtl',
-        languageName: langInfo.name,
-        t: translations[lang],
-        canonicalUrl: getLanguageUrl(lang),
-        alternateUrls: generateAlternateUrls(),
-        languageOptions: generateLanguageOptions(lang),
-      }),
+      kind: 'home',
+      props: getHomeContext(lang, translations),
     }));
+}
+
+function getBlogIndexContext(lang, translations, blogData) {
+  const langInfo = config.supportedLanguages[lang];
+  const posts = blogData.posts || [];
+  return {
+    lang,
+    isRtl: langInfo.dir === 'rtl',
+    currentLanguageName: langInfo.name,
+    t: translations[lang],
+    posts,
+    canonicalUrl: getLanguageUrl(lang).replace(/\/$/, ''),
+    alternateUrls: generateAlternateUrls(),
+    languages: Object.entries(config.supportedLanguages).map(([code, info]) => ({
+      code,
+      name: info.name,
+    })),
+  };
 }
 
 function getBlogPages(translations, blogData) {
   const pages = [];
-  const posts = blogData.posts || [];
 
-  for (const [lang, langInfo] of Object.entries(config.supportedLanguages)) {
+  for (const [lang] of Object.entries(config.supportedLanguages)) {
     if (!translations[lang]) continue;
 
-    const blogIndexContext = {
-      lang,
-      isRtl: langInfo.dir === 'rtl',
-      currentLanguageName: langInfo.name,
-      t: translations[lang],
-      posts,
-      canonicalUrl: getLanguageUrl(lang).replace(/\/$/, ''),
-      alternateUrls: generateAlternateUrls(),
-      languages: Object.entries(config.supportedLanguages).map(([code, info]) => ({
-        code,
-        name: info.name,
-      })),
-    };
+    const blogIndexContext = getBlogIndexContext(lang, translations, blogData);
 
     pages.push({
       pathname: localizedPath(lang, 'blog/'),
-      html: renderTemplate('templates/blog/blog-index.hbs', blogIndexContext),
+      kind: 'blog-index',
+      props: blogIndexContext,
     });
 
-    for (const post of posts) {
+    for (const post of blogIndexContext.posts) {
       pages.push({
         pathname: localizedPath(lang, `blog/${post.slug}/`),
-        html: renderTemplate('templates/blog/blog-post.hbs', {
+        kind: 'blog-post',
+        props: {
           ...blogIndexContext,
           post,
-        }),
+        },
       });
     }
   }
 
   return pages;
+}
+
+function getGradientFaviconLanguageOptions(languages, currentLang) {
+  return Object.entries(languages).map(([code, info]) => ({
+    code,
+    name: info.name,
+    url: code === 'en' ? '/' : `/${urlLanguageCode(code)}/`,
+    current: code === currentLang,
+  }));
+}
+
+function getGradientFaviconContext(lang, languages, translations) {
+  const langInfo = languages[lang];
+  return {
+    lang: lang === 'zh-hans' ? 'zh-CN' : lang === 'zh-hant' ? 'zh-TW' : lang,
+    currentLanguageName: langInfo.name,
+    gf: translations[lang],
+    canonicalUrl: getLanguageUrl(lang),
+    alternateUrls: Object.fromEntries(
+      Object.keys(languages).map((language) => [urlLanguageCode(language), getLanguageUrl(language)])
+    ),
+    languageOptions: getGradientFaviconLanguageOptions(languages, lang),
+  };
 }
 
 function getGradientFaviconPages() {
@@ -307,33 +338,16 @@ function getGradientFaviconPages() {
   };
   const gfTranslations = loadGradientFaviconTranslations(gfLanguages);
 
-  function gfLanguageOptions(currentLang) {
-    return Object.entries(gfLanguages).map(([code, info]) => ({
-      code,
-      name: info.name,
-      url: code === 'en' ? '/' : `/${urlLanguageCode(code)}/`,
-      current: code === currentLang,
-    }));
-  }
-
   return Object.entries(gfLanguages)
     .filter(([lang]) => gfTranslations[lang])
-    .map(([lang, langInfo]) => ({
+    .map(([lang]) => ({
       pathname: localizedPath(lang, 'gradient-favicon/'),
-      html: renderTemplate('templates/gradient-favicon/index.hbs', {
-        lang: lang === 'zh-hans' ? 'zh-CN' : lang === 'zh-hant' ? 'zh-TW' : lang,
-        currentLanguageName: langInfo.name,
-        gf: gfTranslations[lang],
-        canonicalUrl: getLanguageUrl(lang),
-        alternateUrls: Object.fromEntries(
-          Object.keys(gfLanguages).map((language) => [urlLanguageCode(language), getLanguageUrl(language)])
-        ),
-        languageOptions: gfLanguageOptions(lang),
-      }),
+      kind: 'gradient-favicon',
+      props: getGradientFaviconContext(lang, gfLanguages, gfTranslations),
     }));
 }
 
-export function getHtmlPages() {
+export function getPageEntries() {
   const translations = loadTranslations();
   const blogData = buildBlogPosts();
   return [...getHomePages(translations), ...getBlogPages(translations, blogData), ...getGradientFaviconPages()];
