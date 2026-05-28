@@ -2,12 +2,12 @@
   "name": "logo-surf",
   "version": "1.0.0",
   "description": "Multi-language text-to-logo and favicon generator",
-  "main": "build.js",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "build:blog": "node scripts/build-blog.js",
-    "build": "node scripts/build-blog.js && node build.js",
-    "dev": "pnpm run build && python3 -m http.server 8000 --directory dist",
-    "start": "python3 -m http.server 8000 --directory dist"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "start": "astro preview"
   },
   "keywords": [
     "logo",
@@ -19,11 +19,9 @@
   "author": "Logo.surf",
   "license": "CC-BY-NC-4.0",
   "dependencies": {
+    "astro": "^6.4.0",
+    "gray-matter": "^4.0.3",
     "handlebars": "^4.7.8",
-    "fs-extra": "^11.1.1",
-    "path": "^0.12.7",
-    "markdown-it": "^14.0.0",
-    "gray-matter": "^4.0.3"
-  },
-  "devDependencies": {}
+    "markdown-it": "^14.0.0"
+  }
 }

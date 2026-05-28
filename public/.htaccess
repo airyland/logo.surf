@@ -1,0 +1,81 @@
+# Language redirects based on Accept-Language header
+RewriteEngine On
+
+# Redirect based on browser language (only if no specific path is requested)
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^zh-CN [NC]
+RewriteRule ^$ /zh-CN/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^zh-TW [NC]
+RewriteRule ^$ /zh-TW/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^zh [NC]
+RewriteRule ^$ /zh-CN/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^es [NC]
+RewriteRule ^$ /es/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^fr [NC]
+RewriteRule ^$ /fr/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^de [NC]
+RewriteRule ^$ /de/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^ja [NC]
+RewriteRule ^$ /ja/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^ko [NC]
+RewriteRule ^$ /ko/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^pt [NC]
+RewriteRule ^$ /pt/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^ru [NC]
+RewriteRule ^$ /ru/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^ar [NC]
+RewriteRule ^$ /ar/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^it [NC]
+RewriteRule ^$ /it/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^nl [NC]
+RewriteRule ^$ /nl/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^pl [NC]
+RewriteRule ^$ /pl/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^tr [NC]
+RewriteRule ^$ /tr/ [R=302,L]
+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{HTTP:Accept-Language} ^hi [NC]
+RewriteRule ^$ /hi/ [R=302,L]
+
+# Cache static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 year"
+    Header append Cache-Control "public, immutable"
+</FilesMatch>
+
+# Cache HTML files for a shorter period
+<FilesMatch "\.html$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 week"
+    Header append Cache-Control "public"
+</FilesMatch>

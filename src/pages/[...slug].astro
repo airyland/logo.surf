@@ -1,0 +1,16 @@
+---
+import { getHtmlPages, routeParamFromPathname } from '../lib/site.mjs';
+
+export function getStaticPaths() {
+  return getHtmlPages()
+    .filter((page) => page.pathname !== '/')
+    .map((page) => ({
+      params: { slug: routeParamFromPathname(page.pathname) },
+      props: { html: page.html },
+    }));
+}
+
+const { html } = Astro.props;
+---
+
+<Fragment set:html={html} />

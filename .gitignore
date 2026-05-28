@@ -1,12 +1,10 @@
 # Dependencies
 node_modules/
+.astro/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# pnpm
-pnpm-lock.yaml
 
 # Production build
 dist/
