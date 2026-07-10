@@ -127,6 +127,7 @@
     "follow_on_x": "Xでフォロー",
     "disclaimer": "ユーザーは、ロゴやファビコンで使用するテキスト、フォント、その他の要素の使用権を確保する責任があります。",
     "privacy_note": "個人情報は一切収集しません。すべての処理はブラウザ内で行われます。",
-    "license_note": "Creative Commons Attribution 4.0 International Licenseの下でライセンスされています"
+    "license_note": "Creative Commons Attribution 4.0 International Licenseの下でライセンスされています",
+    "changelog": "更新履歴"
   }
 }
