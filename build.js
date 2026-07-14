@@ -28,6 +28,102 @@ const config = {
   translationsDir: 'translations'
 };
 
+// Map an internal language code to its public BCP-47 tag.
+// The internal codes (zh-hans / zh-hant) differ from the URL/hreflang tags
+// (zh-CN / zh-TW); every public-facing surface must use the BCP-47 tag so that
+// <html lang>, in-page hreflang and the sitemap stay consistent.
+function toBcp47(lang) {
+  const map = {
+    'zh-hans': 'zh-CN',
+    'zh-hant': 'zh-TW'
+  };
+  return map[lang] || lang;
+}
+
+// Remove HTML tags / decode a few entities and collapse whitespace so FAQ
+// answers that contain inline markup become clean plain text for JSON-LD.
+function stripHtml(input) {
+  return String(input)
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Build the two per-language JSON-LD blocks (WebApplication + FAQPage).
+// Every value is sourced from the page's own visible copy so the structured
+// data never asserts anything the page does not already state.
+function buildJsonLd(lang, t) {
+  const url = getLanguageUrl(lang);
+  const bcp47 = toBcp47(lang);
+
+  const webApplication = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    'name': 'Logo.surf',
+    'url': url,
+    'description': (t.meta && t.meta.description) || '',
+    'applicationCategory': 'DesignApplication',
+    'operatingSystem': 'Web Browser',
+    'browserRequirements': 'Requires JavaScript.',
+    'inLanguage': bcp47,
+    'isAccessibleForFree': true,
+    'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+    'featureList': [
+      'Text to Logo',
+      'Text to Favicon',
+      'PNG, SVG and ICO export',
+      'Customizable colors and fonts',
+      'Instant preview',
+      'Free download'
+    ],
+    'creator': {
+      '@type': 'Organization',
+      'name': 'Logo.surf',
+      'url': config.baseUrl,
+      'sameAs': [
+        'https://github.com/airyland/logo.surf',
+        'https://twitter.com/we_webmaster'
+      ]
+    }
+  };
+
+  const faq = t.faq || {};
+  const faqPairs = [
+    ['what_is_logosurf', 'what_is_logosurf_answer'],
+    ['ai_question', 'ai_answer'],
+    ['what_is_favicon', 'what_is_favicon_answer'],
+    ['font_copyright', 'font_copyright_answer'],
+    ['supported_characters', 'supported_characters_answer'],
+    ['why_different_sizes', 'why_different_sizes_answer'],
+    ['how_to_add', 'how_to_add_answer']
+  ];
+  const mainEntity = faqPairs
+    .filter(([q, a]) => faq[q] && faq[a])
+    .map(([q, a]) => ({
+      '@type': 'Question',
+      'name': stripHtml(faq[q]),
+      'acceptedAnswer': { '@type': 'Answer', 'text': stripHtml(faq[a]) }
+    }));
+
+  const faqPage = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'inLanguage': bcp47,
+    'mainEntity': mainEntity
+  };
+
+  // Escaping "<" as < keeps a stray "</script>" inside any answer from
+  // breaking out of the inline JSON-LD block.
+  const encode = obj => JSON.stringify(obj).replace(/</g, '\\u003c');
+  return `<script type="application/ld+json">${encode(webApplication)}</script>\n    <script type="application/ld+json">${encode(faqPage)}</script>`;
+}
+
 // Helper functions
 function loadTranslations() {
   const translations = {};
@@ -57,43 +153,30 @@ function getLanguageUrl(lang) {
   if (lang === 'en') {
     return config.baseUrl + '/';
   }
-  // Use proper language codes for URLs
-  const urlMapping = {
-    'zh-hans': 'zh-CN',
-    'zh-hant': 'zh-TW'
-  };
-  const urlLang = urlMapping[lang] || lang;
-  return config.baseUrl + '/' + urlLang + '/';
+  return config.baseUrl + '/' + toBcp47(lang) + '/';
 }
 
 function getFilePath(lang) {
   if (lang === 'en') {
     return 'index.html';
   }
-  // Use proper language codes for file paths
-  const pathMapping = {
-    'zh-hans': 'zh-CN',
-    'zh-hant': 'zh-TW'
-  };
-  const pathLang = pathMapping[lang] || lang;
-  return path.join(pathLang, 'index.html');
+  return path.join(toBcp47(lang), 'index.html');
 }
 
+// Keyed by the public BCP-47 tag so in-page hreflang matches the sitemap.
+// An x-default entry points crawlers at the English version.
 function generateAlternateUrls() {
   const alternateUrls = {};
   for (const lang of Object.keys(config.supportedLanguages)) {
-    alternateUrls[lang] = getLanguageUrl(lang);
+    alternateUrls[toBcp47(lang)] = getLanguageUrl(lang);
   }
+  alternateUrls['x-default'] = getLanguageUrl('en');
   return alternateUrls;
 }
 
 function generateLanguageOptions(currentLang) {
   return Object.entries(config.supportedLanguages).map(([code, info]) => {
-    const urlMapping = {
-      'zh-hans': 'zh-CN',
-      'zh-hant': 'zh-TW'
-    };
-    const urlCode = urlMapping[code] || code;
+    const urlCode = toBcp47(code);
     return {
       code,
       name: info.name,
@@ -146,19 +229,12 @@ function generateSitemap() {
   
   for (const lang of Object.keys(config.supportedLanguages)) {
     const url = getLanguageUrl(lang);
-    const alternates = Object.entries(config.supportedLanguages).map(([altLang]) => {
-      // Use proper hreflang codes
-      const hreflangMapping = {
-        'zh-hans': 'zh-CN',
-        'zh-hant': 'zh-TW'
-      };
-      const hreflangCode = hreflangMapping[altLang] || altLang;
-      return {
-        lang: hreflangCode,
-        url: getLanguageUrl(altLang)
-      };
-    });
-    
+    const alternates = Object.keys(config.supportedLanguages).map(altLang => ({
+      lang: toBcp47(altLang),
+      url: getLanguageUrl(altLang)
+    }));
+    alternates.push({ lang: 'x-default', url: getLanguageUrl('en') });
+
     urls.push({
       loc: url,
       lastmod: new Date().toISOString().split('T')[0],
@@ -168,8 +244,9 @@ function generateSitemap() {
     });
   }
 
+  const today = new Date().toISOString().split('T')[0];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.map(url => `  <url>
     <loc>${url.loc}</loc>
@@ -178,6 +255,12 @@ ${urls.map(url => `  <url>
     <priority>${url.priority}</priority>
 ${url.alternates.map(alt => `    <xhtml:link rel="alternate" hreflang="${alt.lang}" href="${alt.url}"/>`).join('\n')}
   </url>`).join('\n')}
+  <url>
+    <loc>${config.baseUrl}/changelog/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>`;
 
   fs.writeFileSync(path.join(config.outputDir, 'sitemap.xml'), sitemap);
@@ -203,6 +286,101 @@ User-agent: DotBot
 Disallow: /`;
 
   fs.writeFileSync(path.join(config.outputDir, 'robots.txt'), robots);
+}
+
+// Static 404 page. On Cloudflare Pages a top-level 404.html is served with a
+// real 404 status for unmatched paths, which replaces the previous soft-404
+// (unknown paths returning 200 + the home page).
+function generate404() {
+  console.log('🚧 Generating 404.html...');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Page not found - Logo.surf</title>
+    <link rel="icon" type="image/png" sizes="2048x2048" href="/favicon-2048x2048.png">
+    <style>
+      body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: #f9fafb; color: #111827; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+      .wrap { padding: 2rem; max-width: 32rem; }
+      h1 { font-size: 4rem; margin: 0; }
+      p { color: #4b5563; font-size: 1.125rem; }
+      a { display: inline-block; margin-top: 1.5rem; background: #111827; color: #fff; padding: 0.75rem 1.5rem; border-radius: 9999px; text-decoration: none; }
+      a:hover { background: #374151; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>404</h1>
+      <p>The page you are looking for could not be found.</p>
+      <a href="/">Back to Logo.surf</a>
+    </div>
+  </body>
+</html>`;
+
+  fs.writeFileSync(path.join(config.outputDir, '404.html'), html);
+}
+
+// User-facing changelog. Content is written from the visitor's point of view,
+// with no internal implementation detail.
+const changelogEntries = [
+  {
+    date: '2026-07-14',
+    title: 'Better previews and more complete translations',
+    items: [
+      'Logo.surf now appears with a proper preview image when shared on social platforms and messaging apps.',
+      'Search engines and AI assistants can now read a clear summary of the tool and its most common questions.',
+      'Hindi, Korean, Polish and Turkish are now fully translated across the whole page.',
+      'Language settings are now consistent for every locale.',
+      'Improved page structure and accessibility.'
+    ]
+  }
+];
+
+function generateChangelog() {
+  console.log('📝 Generating changelog page...');
+
+  const sections = changelogEntries.map(entry => `
+      <section class="mb-10">
+        <div class="flex items-baseline gap-3 mb-3">
+          <time datetime="${entry.date}" class="text-sm font-mono text-gray-500">${entry.date}</time>
+          <h2 class="text-xl font-semibold text-gray-900">${entry.title}</h2>
+        </div>
+        <ul class="list-disc pl-6 space-y-2 text-gray-600">
+          ${entry.items.map(i => `<li>${i}</li>`).join('\n          ')}
+        </ul>
+      </section>`).join('\n');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - Logo.surf</title>
+    <meta name="description" content="Product updates and improvements for Logo.surf, the free text-to-logo and favicon generator.">
+    <link rel="canonical" href="${config.baseUrl}/changelog/">
+    <link rel="icon" type="image/png" sizes="2048x2048" href="/favicon-2048x2048.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" class="text-xl font-bold text-gray-900">Logo.surf</a>
+        <a href="/" class="text-sm text-gray-600 hover:text-gray-900">Back to app</a>
+      </div>
+    </header>
+    <main class="max-w-3xl mx-auto px-4 py-12">
+      <h1 class="text-3xl font-bold mb-8 text-gray-900">Changelog</h1>
+${sections}
+    </main>
+  </body>
+</html>`;
+
+  const dir = path.join(config.outputDir, 'changelog');
+  fs.mkdirpSync(dir);
+  fs.writeFileSync(path.join(dir, 'index.html'), html);
 }
 
 async function buildSite() {
@@ -235,12 +413,14 @@ async function buildSite() {
 
     const context = {
       lang: lang,
+      htmlLang: toBcp47(lang),
       isRtl: langInfo.dir === 'rtl',
       languageName: langInfo.name,
       t: translations[lang],
       canonicalUrl: getLanguageUrl(lang),
       alternateUrls: generateAlternateUrls(),
-      languageOptions: generateLanguageOptions(lang)
+      languageOptions: generateLanguageOptions(lang),
+      jsonLd: buildJsonLd(lang, translations[lang])
     };
 
     const html = template(context);
@@ -256,6 +436,8 @@ async function buildSite() {
   // Generate SEO files
   generateSitemap();
   generateRobotsTxt();
+  generate404();
+  generateChangelog();
 
   // Create redirects for common language patterns
   console.log('🔗 Generating redirect rules...');

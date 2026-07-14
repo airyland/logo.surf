@@ -6,7 +6,9 @@
   "scripts": {
     "build": "node build.js",
     "dev": "pnpm run build && python3 -m http.server 8000 --directory dist",
-    "start": "python3 -m http.server 8000 --directory dist"
+    "start": "python3 -m http.server 8000 --directory dist",
+    "lint": "node scripts/lint-i18n-seo.js",
+    "prepare": "husky"
   },
   "keywords": [
     "logo",
@@ -18,9 +20,11 @@
   "author": "Logo.surf",
   "license": "CC-BY-NC-4.0",
   "dependencies": {
-    "handlebars": "^4.7.8",
     "fs-extra": "^11.1.1",
+    "handlebars": "^4.7.8",
     "path": "^0.12.7"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
 }

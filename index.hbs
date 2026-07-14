@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{lang}}" {{#if isRtl}}dir="rtl"{{/if}}>
+<html lang="{{htmlLang}}" {{#if isRtl}}dir="rtl"{{/if}}>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,15 +19,32 @@
     <meta property="og:description" content="{{t.meta.description}}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{canonicalUrl}}">
-    <meta property="og:image" content="https://www.logo.surf/favicon-512x512.png">
-    
+    <meta property="og:site_name" content="Logo.surf">
+    <meta property="og:image" content="https://www.logo.surf/assets/logo.surf.preview.png">
+    <meta property="og:image:width" content="2570">
+    <meta property="og:image:height" content="1314">
+    <meta property="og:image:alt" content="Logo.surf text-to-logo and favicon generator preview">
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{t.meta.title}}">
     <meta name="twitter:description" content="{{t.meta.description}}">
-    <meta name="twitter:image" content="https://www.logo.surf/favicon-512x512.png">
+    <meta name="twitter:image" content="https://www.logo.surf/assets/logo.surf.preview.png">
+    <meta name="twitter:image:alt" content="Logo.surf text-to-logo and favicon generator preview">
+    <meta name="twitter:site" content="@we_webmaster">
     <meta name="twitter:creator" content="@we_webmaster">
-    
+
+    <!-- Structured data (JSON-LD): WebApplication + FAQPage, rendered per language -->
+    {{{jsonLd}}}
+
+    <!-- Resource hints for third-party origins -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
@@ -177,7 +194,7 @@
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center py-4">
           <div class="flex items-center">
-            <h1 class="text-xl font-bold text-gray-900">Logo.surf</h1>
+            <span class="text-xl font-bold text-gray-900">Logo.surf</span>
           </div>
           <div class="language-switcher">
             <button class="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg shadow-sm border border-gray-200 text-sm hover:bg-gray-50 transition-colors">
@@ -199,6 +216,7 @@
       </div>
     </header>
 
+    <main>
     <section class="py-16 bg-gray-50 overflow-hidden">
       <div class="container mx-auto px-4 z-10 text-center">
         <div class="max-w-3xl mx-auto text-center">
@@ -367,7 +385,7 @@
           {{t.gallery.emoji_note}}
         </p>
         <p class="text-base text-center text-gray-500">
-          {{t.gallery.copyright_note}}
+          {{t.gallery.brand_copyright}}
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 gallery-box mt-12">
           <!-- Favicon examples will be dynamically added here -->
@@ -572,20 +590,20 @@
         </div>
       </div>
     </div>
+    </main>
     <!-- Language Footer Section -->
     <section class="py-12 bg-white border-t border-gray-200">
       <div class="container mx-auto px-4">
-        <h3 class="text-2xl font-semibold mb-6 text-center text-gray-900">{{t.footer.available_languages_title}}</h3>
+        <h2 class="text-2xl font-semibold mb-6 text-center text-gray-900">{{t.languages.title}}</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
           {{#each languageOptions}}
           <a href="{{url}}" class="flex items-center space-x-2 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors {{#if current}}bg-blue-50 border-blue-200{{/if}}">
-            <span class="text-lg">{{flag}}</span>
             <span class="text-sm font-medium text-gray-700">{{name}}</span>
           </a>
           {{/each}}
         </div>
         <p class="text-center text-sm text-gray-600">
-          {{t.footer.language_note}}
+          {{t.languages.note}}
         </p>
       </div>
     </section>
@@ -597,7 +615,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{#if isRtl}}ml-2{{else}}mr-2{{/if}}">
               <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
             </svg>
-            {{t.footer.follow_us}}
+            {{t.footer.follow_on_x}}
           </a>
         </div>
         <div class="flex flex-wrap justify-center mb-4">
@@ -612,6 +630,9 @@
           <a href="https://Small.im" aria-label="Small.im Link" target="_blank" class="text-white mx-2 my-1 hover:underline">Small.im</a>
           <a href="https://www.base64.sh" aria-label="base64.sh Link" target="_blank" class="text-white mx-2 my-1 hover:underline">Base64.sh</a>
           <a href="https://www.redirectcheck.org" aria-label="RedirectCheck Link" target="_blank" class="text-white mx-2 my-1 hover:underline">RedirectCheck</a>
+        </div>
+        <div class="flex justify-center mb-4">
+          <a href="/changelog/" class="text-white mx-2 my-1 hover:underline">{{t.footer.changelog}}</a>
         </div>
         <p class="text-center text-xs text-white opacity-75">
           {{t.footer.disclaimer}}
