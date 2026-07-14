@@ -10,55 +10,55 @@
     "subtitle": "Saniyeler içinde profesyonel logo ve favicon oluşturun"
   },
   "features": {
-    "ship_fast": "Envío Rápido",
-    "professional": "Profesional",
+    "ship_fast": "Hızlı Yayınlama",
+    "professional": "Profesyonel",
     "totally_free": "Tamamen Ücretsiz"
   },
   "cta": {
     "generate_now": "Logonuzu ve Faviconunuzu Şimdi Oluşturun",
-    "view_source": "Ver Código Fuente"
+    "view_source": "Kaynak kodunu GitHub'da görüntüle"
   },
   "generator": {
-    "try_now": "Probar Ahora",
-    "settings": "Configuración",
-    "text_label": "Ingresa Tu Texto",
-    "emoji_support": "Soporte de Emojis",
-    "size": "Tamaño",
-    "radius": "Radio",
-    "background_color": "Color de Fondo",
-    "font_family": "Familia de Fuentes",
-    "select_font": "Seleccionar Fuente",
-    "font_weight": "Grosor de Fuente",
+    "try_now": "Hemen deneyin",
+    "settings": "Ayarlar",
+    "text_label": "Metin",
+    "emoji_support": "Emojiler desteklenir, örneğin 🚀 veya 💡",
+    "size": "Boyut",
+    "radius": "Yarıçap",
+    "background_color": "Arka Plan Rengi",
+    "font_family": "Yazı Tipi Ailesi",
+    "select_font": "Yazı tipi seçin",
+    "font_weight": "Yazı Tipi Kalınlığı",
     "normal": "Normal",
-    "bold": "Negrita",
-    "text_color": "Color de Texto",
-    "vertical_position": "Posición Vertical",
-    "reset_default": "Restablecer Predeterminado",
-    "generate_favicons": "Generar Favicon",
-    "recommended_schemes": "Esquemas de Color Recomendados",
-    "preview": "Vista Previa",
-    "download_png": "Descargar PNG",
-    "download_svg": "Descargar SVG",
-    "download_zip": "Descargar ZIP",
+    "bold": "Kalın",
+    "text_color": "Metin Rengi",
+    "vertical_position": "Dikey Konumu İnce Ayarla",
+    "reset_default": "Varsayılana Sıfırla",
+    "generate_favicons": "Favicon Oluştur",
+    "recommended_schemes": "Önerilen Renk Şemaları",
+    "preview": "Önizleme",
+    "download_png": "PNG İndir",
+    "download_svg": "SVG İndir",
+    "download_zip": "Tümünü İndir (ZIP)",
     "zip_contents": "Tümünü İndir (ZIP), birden fazla boyutta (16x16 ile 512x512 arası) PNG dosyaları, bir SVG dosyası ve tüm tarayıcılar için favicon dosyaları içerir",
     "tip_emoji": "İpucu: Emojiler için, mükemmel hizalama amacıyla dikey konumu ayarlamanız gerekebilir",
-    "png_optimization": "PNG Optimizado para Web",
-    "favicon_html": "Código HTML de Favicon",
-    "test_favicon": "Probar Favicon",
-    "copy_html": "Copiar HTML"
+    "png_optimization": "PNG dosyalarını daha da optimize etmek için TinyPNG veya ImageOptim gibi araçları deneyin",
+    "favicon_html": "Favicon HTML Kodu",
+    "test_favicon": "Favicon'un doğru çalışıp çalışmadığını test etmek için dosyaları web sitenize yükleyin ve sayfayı ziyaret edin",
+    "copy_html": "HTML Kodunu Kopyala"
   },
   "gallery": {
     "title": "Logo Örnekleri",
     "emoji_note": "Not: Emoji görünümü farklı işletim sistemleri ve tarayıcılarda değişebilir",
-    "brand_copyright": "© 2025 Logo.Surf - Todos los Derechos Reservados"
+    "brand_copyright": "Gösterilen marka logoları ilgili sahiplerinin ticari markalarıdır ve yalnızca gösterim amacıyla kullanılmıştır"
   },
   "features_section": {
-    "title": "Características",
-    "multiple_formats": "Múltiples Formatos",
+    "title": "Özellikler",
+    "multiple_formats": "Birden Fazla Format",
     "multiple_formats_desc": "PNG, SVG ve ICO dosyaları dahil çeşitli favicon formatlarında logo ve favicon oluşturun",
-    "customization": "Personalización Completa",
-    "customization_desc": "Ajusta tamaño, color, fuente y más con controles sencillos",
-    "instant_preview": "Vista Previa Instantánea",
+    "customization": "Özelleştirme",
+    "customization_desc": "Markanıza mükemmel şekilde uyması için renkleri, yazı tiplerini, boyutları ve konumlandırmayı kolayca özelleştirin",
+    "instant_preview": "Anında Önizleme",
     "instant_preview_desc": "Logonuzda yapılan değişiklikleri gerçek zamanlı olarak görün"
   },
   "use_cases": {
@@ -110,23 +110,23 @@
     "ai_answer": "Şu anda Logo.surf yapay zeka kullanmıyor. Yazı tipleri, renkler ve boyutlandırma gibi tasarım öğeleri üzerinde tam kontrol sağlayan, doğrudan bir metinden logoya dönüştürücüdür.",
     "what_is_favicon": "Favicon nedir?",
     "what_is_favicon_answer": "Favicon, web sitenizi temsil etmek için tarayıcı sekmelerinde, yer imlerinde ve arama sonuçlarında görünen küçük bir simgedir. Kullanıcıların sitenizi bir bakışta tanımasına yardımcı olur.",
-    "font_copyright": "Derechos de Autor de Fuentes",
-    "font_copyright_answer": "Todas las fuentes se utilizan con la licencia adecuada. Respetamos los derechos de propiedad intelectual.",
-    "supported_characters": "Caracteres Compatibles",
-    "supported_characters_answer": "Soporta caracteres UTF-8, incluyendo emojis, múltiples scripts y símbolos especiales",
+    "font_copyright": "Yazı tipi telif hakları ne olacak?",
+    "font_copyright_answer": "Kullandığınız her yazı tipinin lisans koşullarını kontrol etmek önemlidir. Bu araçta sunulan yazı tipleri, genellikle ticari kullanım için ücretsiz olan web güvenli yazı tipleridir, ancak kendi kullanım durumunuz için lisansı her zaman doğrulayın.",
+    "supported_characters": "Hangi tür karakterler desteklenir?",
+    "supported_characters_answer": "Favicon oluşturucumuz harfler, sayılar, semboller ve emojiler dahil UTF-8 karakterlerini destekler. Ancak karmaşık karakterler veya emojiler cihazdan cihaza farklı görünebilir.",
     "why_different_sizes": "Neden farklı favicon boyutlarına ihtiyacım var?",
     "why_different_sizes_answer": "Farklı cihazlar ve platformlar farklı favicon boyutları gerektirir. Örneğin iOS, ana ekran simgeleri için 180x180 gerektirirken, tarayıcı sekmeleri genellikle 16x16 veya 32x32 piksel kullanır.",
     "how_to_add": "Favicon'u web siteme nasıl eklerim?",
     "how_to_add_answer": "Verilen HTML kodunu kopyalayın ve web sitenizin <head> bölümüne yapıştırın. Favicon dosyalarını web sitenizin kök dizinine veya HTML'de belirtilen yola yüklediğinizden emin olun."
   },
   "languages": {
-    "title": "Disponible en Múltiples Idiomas",
-    "note": "Selecciona tu idioma preferido arriba o en los enlaces a continuación"
+    "title": "Birden Fazla Dilde Mevcut",
+    "note": "Tercih ettiğiniz dili yukarıdan veya aşağıdaki bağlantılardan seçin"
   },
   "footer": {
-    "follow_on_x": "Síguenos en X (Twitter)",
+    "follow_on_x": "Bizi X'te takip edin",
     "disclaimer": "Kullanıcılar, logolarında ve faviconlarında kullandıkları metin, yazı tipi veya diğer öğeleri kullanma haklarına sahip olduklarından emin olmaktan sorumludur.",
-    "privacy_note": "Tu privacidad es importante para nosotros",
+    "privacy_note": "Hiçbir kişisel bilgi toplamıyoruz. Tüm işlemler tarayıcınızda gerçekleşir.",
     "license_note": "Creative Commons Atıf 4.0 Uluslararası Lisansı altında lisanslanmıştır",
     "changelog": "Değişiklik günlüğü"
   }

@@ -1,11 +1,13 @@
 # logo.surf GEO/SEO Audit Fix Report
 
-- Date: 2026-07-10
-- Branch: `fix/geo-seo-audit`
+- Date: 2026-07-14 (second pass; first pass 2026-07-10)
+- Branch: `fix/geo-seo-audit-fixes` (builds on the first-pass `fix/geo-seo-audit`)
 - Source audit: parent task P30002 (`task_Sm0c1zbMrsqReA4A978vLXtx`), wiki `seo-audit/2026-07-03`
 - Scope: repository-level fixes only (`index.hbs`, `build.js`, `translations/*.json`, build tooling). No production deploy or merge was performed.
 
 All changes live in the single Handlebars template and the build script, so one edit propagates to all 16 language builds.
+
+> Second-pass note: an adversarial re-review of the first pass found that its claim of "zero Spanish contamination" held only for `hi`. The Polish (`pl`) and Turkish (`tr`) files were still roughly 40% Spanish (UI labels, the features grid, two FAQ entries, and the languages/footer blocks). This pass finishes that translation work and hardens the lint so the defect cannot silently reappear. See section 2b.
 
 ---
 
@@ -79,10 +81,22 @@ Effect before fix: the "Follow us" button had no label, the languages section ha
 - That old copy asserted the product is "AI powered" (`generación de logotipos impulsada por IA`), which directly contradicts the site's actual positioning. The current English FAQ states Logo.surf does not use AI, and that "not AI" stance is the key differentiator called out by the audit.
 - The Turkish meta description also contained mojibake.
 
-Fix: the corrupted fields were replaced with correct translations of the current canonical English copy, in the correct language, with no AI claim. `ko` was already clean Korean and only needed the schema remap. A sweep now confirms zero Spanish contamination and zero false AI claims across all locales.
+Fix: the corrupted fields were replaced with correct translations of the current canonical English copy, in the correct language, with no AI claim. `ko` was already clean Korean and only needed the schema remap.
 
 ### Empty flag markup (fixed)
 The language grid rendered an always-empty `{{flag}}` span (no flag data exists). The empty element was removed.
+
+---
+
+## 2b. Second pass: Polish and Turkish were still ~40% Spanish (fixed)
+
+The first pass converted `pl` and `tr` from the flat to the nested schema but carried the pre-existing Spanish strings across untouched, then reported them as clean. A key-by-key re-review of every locale (comparing each value against the Spanish reference) found the leak was extensive, not limited to the FAQ:
+
+- `pl` and `tr`: about 40 strings each were Spanish, including the generator labels (`Configuración`, `Vista Previa`, `Color de Fondo`, `Descargar PNG`), the features grid (`Características`, `Múltiples Formatos`), two FAQ entries (`font_copyright`, `supported_characters`), `gallery.brand_copyright` (which was also the wrong sentence: a Spanish "all rights reserved" instead of the trademark disclaimer), the `languages` block, and `footer.follow_on_x` / `footer.privacy_note`.
+- Root cause: the original flat `pl.json` / `tr.json` on `main` were themselves seeded from `es.json` and only partially translated, so the correct text could not be recovered from git history. Each Spanish string was translated fresh from the current canonical English copy into proper Polish / Turkish.
+- `hi`, `ko` and the other 12 locales were re-verified clean.
+
+Verified: a full cross-locale sweep now reports zero strings in any non-Romance locale that are byte-identical to the Spanish reference (Romance locales `fr` / `it` / `pt` are excluded because they legitimately share vocabulary with Spanish), and template-key parity holds across all 16 files.
 
 ---
 
@@ -99,10 +113,11 @@ The language grid rendered an always-empty `{{flag}}` span (no flag data exists)
 `scripts/lint-i18n-seo.js` (run via `pnpm run lint`) fails the build if any of the fixed defects regress:
 
 1. i18n completeness: every `{{t.*}}` key used by the template must exist and be non-empty in all 16 locale files (catches key mismatches and half-migrated schemas).
-2. Template invariants: exactly one `<h1>`, a `<main>` landmark, `<html lang="{{htmlLang}}">`, a JSON-LD injection point, and social images that resolve to a real local asset (the old `favicon-512x512` reference is explicitly rejected).
-3. Rendered output: after building, every page must expose valid `WebApplication` + `FAQPage` JSON-LD, one `<h1>`, a `<main>`, and an `<html lang>` that matches its URL locale and is never an internal-only code.
+2. Cross-locale contamination: no non-Romance locale may contain a string that is byte-identical to the Spanish reference (this is exactly how `pl` / `tr` ended up part-Spanish). Romance locales (`fr` / `it` / `pt`) are excluded and a short allow-list covers universal tokens (brand name, `PNG`, `SVG`, `Normal`, etc.).
+3. Template invariants: exactly one `<h1>`, a `<main>` landmark, `<html lang="{{htmlLang}}">`, a JSON-LD injection point, and social images that resolve to a real local asset (the old `favicon-512x512` reference is explicitly rejected).
+4. Rendered output: after building, every page must expose valid `WebApplication` + `FAQPage` JSON-LD, one `<h1>`, a `<main>`, and an `<html lang>` that matches its URL locale and is never an internal-only code.
 
-Husky is installed and configured (`.husky/pre-commit` runs `pnpm run lint`) so the check runs before every commit. Verified: the lint passes on the clean tree and fails (exit 1) when a translation key is dropped or the broken image reference is reintroduced.
+Husky is installed and configured (`.husky/pre-commit` runs `pnpm run lint`) so the check runs before every commit. Verified: the lint passes on the clean tree and fails (exit 1) when a translation key is dropped, a Spanish string is reintroduced into a non-Romance locale, or the broken image reference is reintroduced.
 
 ---
 

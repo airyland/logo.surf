@@ -327,7 +327,7 @@ function generate404() {
 // with no internal implementation detail.
 const changelogEntries = [
   {
-    date: '2026-07-10',
+    date: '2026-07-14',
     title: 'Better previews and more complete translations',
     items: [
       'Logo.surf now appears with a proper preview image when shared on social platforms and messaging apps.',

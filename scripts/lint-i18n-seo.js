@@ -60,6 +60,55 @@ for (const file of translationFiles) {
   }
 }
 
+// --- 1b. Cross-locale content contamination --------------------------------
+// The 2026-07 audit uncovered locales (pl, tr) whose strings had been copied
+// verbatim from the Spanish file instead of being translated, so those pages
+// rendered partly in Spanish. Guard against that class of "wrong language"
+// defect: a non-Romance locale must never share a full string with Spanish.
+// Romance locales (es, fr, it, pt) are excluded because they legitimately
+// share vocabulary, and a short allow-list covers universal / technical tokens
+// (brand name, format acronyms, "Normal", etc.) that are identical everywhere.
+function flatten(obj, prefix = '', out = {}) {
+  for (const [k, v] of Object.entries(obj)) {
+    const key = prefix ? `${prefix}.${k}` : k;
+    if (v && typeof v === 'object' && !Array.isArray(v)) flatten(v, key, out);
+    else out[key] = v;
+  }
+  return out;
+}
+
+const flatByLocale = {};
+for (const file of translationFiles) {
+  flatByLocale[file.replace(/\.json$/, '')] = flatten(
+    readJson(path.join(root, 'translations', file))
+  );
+}
+
+const romanceLocales = new Set(['es', 'fr', 'it', 'pt']);
+// Values that are legitimately identical across languages (brand, acronyms,
+// single loan-words). Compared case-insensitively after trimming.
+const universalTokens = new Set(
+  ['logo.surf', 'normal', 'png', 'svg', 'ico', 'html', 'zip', 'utf-8'].map(s => s)
+);
+const es = flatByLocale['es'];
+if (es) {
+  for (const [locale, data] of Object.entries(flatByLocale)) {
+    if (locale === 'es' || romanceLocales.has(locale)) continue;
+    for (const [key, value] of Object.entries(data)) {
+      if (typeof value !== 'string') continue;
+      const v = value.trim();
+      const esv = typeof es[key] === 'string' ? es[key].trim() : null;
+      if (!esv || v.length < 4) continue;
+      if (v.toLowerCase() === esv.toLowerCase() && !universalTokens.has(v.toLowerCase())) {
+        fail(
+          `translations/${locale}.json: "${key}" is identical to the Spanish string ` +
+            `("${v}") - likely untranslated / wrong-language copy`
+        );
+      }
+    }
+  }
+}
+
 // --- 2. Template invariants ------------------------------------------------
 const h1Count = (template.match(/<h1\b/g) || []).length;
 if (h1Count !== 1) fail(`index.hbs: expected exactly one <h1>, found ${h1Count}`);

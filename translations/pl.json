@@ -10,55 +10,55 @@
     "subtitle": "Twórz profesjonalne logo i favicon w kilka sekund"
   },
   "features": {
-    "ship_fast": "Envío Rápido",
-    "professional": "Profesional",
+    "ship_fast": "Szybkie wdrożenie",
+    "professional": "Profesjonalne",
     "totally_free": "Całkowicie za darmo"
   },
   "cta": {
     "generate_now": "Wygeneruj teraz swoje logo i favicon",
-    "view_source": "Ver Código Fuente"
+    "view_source": "Zobacz kod źródłowy na GitHubie"
   },
   "generator": {
-    "try_now": "Probar Ahora",
-    "settings": "Configuración",
-    "text_label": "Ingresa Tu Texto",
-    "emoji_support": "Soporte de Emojis",
-    "size": "Tamaño",
-    "radius": "Radio",
-    "background_color": "Color de Fondo",
-    "font_family": "Familia de Fuentes",
-    "select_font": "Seleccionar Fuente",
-    "font_weight": "Grosor de Fuente",
-    "normal": "Normal",
-    "bold": "Negrita",
-    "text_color": "Color de Texto",
-    "vertical_position": "Posición Vertical",
-    "reset_default": "Restablecer Predeterminado",
-    "generate_favicons": "Generar Favicon",
-    "recommended_schemes": "Esquemas de Color Recomendados",
-    "preview": "Vista Previa",
-    "download_png": "Descargar PNG",
-    "download_svg": "Descargar SVG",
-    "download_zip": "Descargar ZIP",
+    "try_now": "Wypróbuj teraz",
+    "settings": "Ustawienia",
+    "text_label": "Tekst",
+    "emoji_support": "Emoji są obsługiwane, np. 🚀 lub 💡",
+    "size": "Rozmiar",
+    "radius": "Promień",
+    "background_color": "Kolor tła",
+    "font_family": "Rodzina czcionek",
+    "select_font": "Wybierz czcionkę",
+    "font_weight": "Grubość czcionki",
+    "normal": "Normalna",
+    "bold": "Pogrubiona",
+    "text_color": "Kolor tekstu",
+    "vertical_position": "Dostosuj pozycję w pionie",
+    "reset_default": "Przywróć domyślne",
+    "generate_favicons": "Generuj favicony",
+    "recommended_schemes": "Polecane zestawy kolorów",
+    "preview": "Podgląd",
+    "download_png": "Pobierz PNG",
+    "download_svg": "Pobierz SVG",
+    "download_zip": "Pobierz wszystko (ZIP)",
     "zip_contents": "Pobierz wszystko (ZIP) zawiera pliki PNG w wielu rozmiarach (od 16x16 do 512x512), plik SVG oraz pliki favicon dla wszystkich przeglądarek",
     "tip_emoji": "Wskazówka: w przypadku emoji może być konieczne dostosowanie pozycji w pionie, aby uzyskać idealne wyrównanie",
-    "png_optimization": "PNG Optimizado para Web",
-    "favicon_html": "Código HTML de Favicon",
-    "test_favicon": "Probar Favicon",
-    "copy_html": "Copiar HTML"
+    "png_optimization": "Aby dodatkowo zoptymalizować pliki PNG, wypróbuj narzędzia takie jak TinyPNG lub ImageOptim",
+    "favicon_html": "Kod HTML favicona",
+    "test_favicon": "Aby sprawdzić, czy favicon działa poprawnie, prześlij pliki na swoją witrynę i odwiedź stronę",
+    "copy_html": "Kopiuj kod HTML"
   },
   "gallery": {
     "title": "Przykłady Logo",
     "emoji_note": "Uwaga: wyświetlanie emoji może się różnić w zależności od systemu operacyjnego i przeglądarki",
-    "brand_copyright": "© 2025 Logo.Surf - Todos los Derechos Reservados"
+    "brand_copyright": "Pokazane logo marek są znakami towarowymi ich właścicieli i służą wyłącznie do celów demonstracyjnych"
   },
   "features_section": {
-    "title": "Características",
-    "multiple_formats": "Múltiples Formatos",
+    "title": "Funkcje",
+    "multiple_formats": "Wiele formatów",
     "multiple_formats_desc": "Generuj logo i favicon w formatach PNG, SVG oraz różnych formatach favicon, w tym plikach ICO",
-    "customization": "Personalización Completa",
-    "customization_desc": "Ajusta tamaño, color, fuente y más con controles sencillos",
-    "instant_preview": "Vista Previa Instantánea",
+    "customization": "Personalizacja",
+    "customization_desc": "Łatwo dostosuj kolory, czcionki, rozmiary i pozycjonowanie, aby idealnie pasowały do Twojej marki",
+    "instant_preview": "Natychmiastowy podgląd",
     "instant_preview_desc": "Zobacz zmiany w swoim logo w czasie rzeczywistym"
   },
   "use_cases": {
@@ -110,23 +110,23 @@
     "ai_answer": "Obecnie Logo.surf nie korzysta z AI. To proste narzędzie zamieniające tekst na logo, które daje pełną kontrolę nad elementami projektu, takimi jak czcionki, kolory i rozmiar.",
     "what_is_favicon": "Czym jest favicon?",
     "what_is_favicon_answer": "Favicon to mała ikona, która pojawia się w kartach przeglądarki, zakładkach i wynikach wyszukiwania, reprezentując Twoją witrynę. Pomaga użytkownikom rozpoznać stronę na pierwszy rzut oka.",
-    "font_copyright": "Derechos de Autor de Fuentes",
-    "font_copyright_answer": "Todas las fuentes se utilizan con la licencia adecuada. Respetamos los derechos de propiedad intelectual.",
-    "supported_characters": "Caracteres Compatibles",
-    "supported_characters_answer": "Soporta caracteres UTF-8, incluyendo emojis, múltiples scripts y símbolos especiales",
+    "font_copyright": "A co z prawami autorskimi do czcionek?",
+    "font_copyright_answer": "Ważne jest, aby sprawdzić warunki licencji każdej używanej czcionki. Czcionki dostępne w tym narzędziu to czcionki web-safe, które zazwyczaj można bezpłatnie wykorzystywać komercyjnie, ale zawsze weryfikuj licencję dla swojego konkretnego zastosowania.",
+    "supported_characters": "Jakie rodzaje znaków są obsługiwane?",
+    "supported_characters_answer": "Nasz generator faviconów obsługuje znaki UTF-8, w tym litery, cyfry, symbole i emoji. Złożone znaki lub emoji mogą jednak wyświetlać się różnie na różnych urządzeniach.",
     "why_different_sizes": "Dlaczego potrzebuję różnych rozmiarów favicon?",
     "why_different_sizes_answer": "Różne urządzenia i platformy wymagają różnych rozmiarów favicon. Na przykład iOS potrzebuje 180x180 dla ikon na ekranie głównym, podczas gdy karty przeglądarki zwykle używają 16x16 lub 32x32 pikseli.",
     "how_to_add": "Jak dodać favicon do mojej witryny?",
     "how_to_add_answer": "Skopiuj podany kod HTML i wklej go w sekcji <head> swojej witryny. Pamiętaj, aby przesłać pliki favicon do katalogu głównego witryny lub ścieżki wskazanej w kodzie HTML."
   },
   "languages": {
-    "title": "Disponible en Múltiples Idiomas",
-    "note": "Selecciona tu idioma preferido arriba o en los enlaces a continuación"
+    "title": "Dostępne w wielu językach",
+    "note": "Wybierz preferowany język powyżej lub z linków poniżej"
   },
   "footer": {
-    "follow_on_x": "Síguenos en X (Twitter)",
+    "follow_on_x": "Obserwuj nas na X",
     "disclaimer": "Użytkownicy są odpowiedzialni za zapewnienie, że mają prawa do wykorzystania wszelkiego tekstu, czcionek lub innych elementów w swoich logo i favicon.",
-    "privacy_note": "Tu privacidad es importante para nosotros",
+    "privacy_note": "Nie zbieramy żadnych danych osobowych. Całe przetwarzanie odbywa się w Twojej przeglądarce.",
     "license_note": "Na licencji Creative Commons Uznanie autorstwa 4.0 Międzynarodowe",
     "changelog": "Lista zmian"
   }
